@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kaya/config/theme/app_themes.dart';
+import 'package:kaya/features/authentication/login_page/login_page.dart';
 import 'package:kaya/features/products/pages/home_page/home_page.dart';
 import 'package:kaya/injection_container.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
             ),
           );
         },
-        child: const HomePage(),
+        // child: const HomePage(),
+        child: const LoginPage(),
       ),
     );
   }

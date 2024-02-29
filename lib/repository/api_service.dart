@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
+import '../models/authentication_model/signup_model.dart';
 import '../models/category_model/category_model.dart';
 import '../models/image_model/slider_model.dart';
 import '../models/product_detail_model/product_detail_model.dart';
@@ -32,4 +33,7 @@ abstract class ApiService {
 
   @GET('product/by-category/{slug}')
   Future<ProductOuterModel> getProductsByCategory(@Path() String slug);
+
+  @POST('auth/register')
+  Future<dynamic> signup(@Body() SignUpRequestModel signupModel);
 }
