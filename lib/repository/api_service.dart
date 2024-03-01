@@ -29,7 +29,8 @@ abstract class ApiService {
   Future<ProductCategoryOuterModel> getChildCategories(@Path() String slug);
 
   @GET('product/search')
-  Future<ProductOuterModel> getSearchProduct(@Query("search") String search);
+  Future<ProductOuterModel> getSearchProduct(
+      @Query("search") String search, @Query("page") String page);
 
   @GET('product/by-category/{slug}')
   Future<ProductOuterModel> getProductsByCategory(@Path() String slug);

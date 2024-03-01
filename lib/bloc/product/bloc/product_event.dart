@@ -13,8 +13,12 @@ class ProductDetailFetchEvent extends ProductEvent {
 
 class SearchProductsEvent extends ProductEvent {
   final String searchQuery;
+  final bool newQuery;
 
-  SearchProductsEvent({required this.searchQuery});
+  SearchProductsEvent({
+    required this.searchQuery,
+    this.newQuery = false,
+  });
 }
 
 class ProductOfCategoryFetchEvent extends ProductEvent {

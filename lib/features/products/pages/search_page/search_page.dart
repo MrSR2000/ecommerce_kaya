@@ -142,23 +142,32 @@ class _SearchPageState extends State<SearchPage> {
                 style: mediumTextStyle,
                 decoration: const InputDecoration(
                   hintText: 'Search ...',
-                  // Add a border only when not focused
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
                 onChanged: (text) {
                   if (text.isNotEmpty) {
+                    log("called from onchanged");
                     _debouncer.run(() {
-                      _searchProductBloc
-                          .add(SearchProductsEvent(searchQuery: text));
+                      _searchProductBloc.add(SearchProductsEvent(
+                        searchQuery: text,
+                        newQuery: true,
+                      ));
                     });
                   }
                 },
                 textInputAction: TextInputAction.search,
                 onSubmitted: (value) {
-                  _searchProductBloc.add(
-                    SearchProductsEvent(searchQuery: value),
-                  );
+                  log("called from onsubmit");
+
+                  if (value.isNotEmpty) {
+                    _searchProductBloc.add(
+                      SearchProductsEvent(
+                        searchQuery: value,
+                        newQuery: true,
+                      ),
+                    );
+                  }
                 },
               ),
             ),
@@ -176,13 +185,13 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: BlocProvider(
-          create: (context) => _searchProductBloc,
-          // child: ProductsGrid(
-          //   productBloc: _searchProductBloc
-          //     ..add(SearchProductsEvent(searchQuery: _searchController.text)),
-          // ),
+      body: BlocProvider(
+        create: (context) => _searchProductBloc,
+        child: ProductsGrid(
+          reCallApi: () {
+            _searchProductBloc
+                .add(SearchProductsEvent(searchQuery: _searchController.text));
+          },
         ),
       ),
     );

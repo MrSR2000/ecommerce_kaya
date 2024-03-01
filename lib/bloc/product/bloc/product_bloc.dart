@@ -84,18 +84,51 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   FutureOr<void> searchProductsEvent(
       SearchProductsEvent event, Emitter<ProductState> emit) async {
-    // emit(ProductLoadingState());
+    log("search product event called new query = ${event.newQuery}");
 
+    if (event.newQuery) {
+      page = 1;
+    }
+
+    if (state is ProductLoadingState) return;
+
+    final currentState = state;
+    var oldProducts = <ProductModel>[];
+
+    if (currentState is ProductSuccessfulState) {
+      oldProducts = currentState.products;
+    }
+    emit(
+      ProductLoadingState(
+        oldProducts: oldProducts,
+        isFirstFetch: page == 1,
+      ),
+    );
     try {
-      ProductOuterModel productOuter =
-          await sl<ApiService>().getSearchProduct(event.searchQuery);
+      ProductOuterModel productOuter = await sl<ApiService>().getSearchProduct(
+        event.searchQuery,
+        page.toString(),
+      );
 
-      log("search product success = $productOuter");
+      log("seach  product success = $productOuter");
 
-      // emit(SearchProductSuccessfulState(searchProduct: productOuter));
-      // emit(ProductSuccessfulState(product: productOuter));
+      List<ProductModel> products = [];
+      page++;
+      if (!event.newQuery) {
+        products = (state as ProductLoadingState).oldProducts;
+      }
+      products.addAll(productOuter.data!.docs!);
+
+      log("this is final page = ${!productOuter.data!.pagination!.nextPage!}");
+
+      emit(ProductSuccessfulState(
+        products: products,
+        isFinalPage: !productOuter.data!.pagination!.nextPage!,
+      ));
     } catch (e) {
       log("search product error = $e");
+
+      emit(ProductErrorState(error: e.toString()));
     }
   }
 

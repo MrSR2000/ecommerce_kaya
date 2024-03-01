@@ -187,11 +187,18 @@ class _ProductsGridState extends State<ProductsGrid> {
                         const Duration(milliseconds: 30),
                         () {
                           scrollController.jumpTo(
-                              scrollController.position.maxScrollExtent - 20);
+                            scrollController.position.maxScrollExtent -
+                                getDeviceSize(context: context).deviceHeight /
+                                    3.4,
+                          );
                         },
                       );
 
-                      return centerCircularLoadingWidget();
+                      // return centerCircularLoadingWidget();
+                      return textWidget(
+                        text: "Loading ...",
+                        textSize: TextSize.medium,
+                      );
                     }
                   },
                 );
@@ -212,6 +219,7 @@ class _ProductsGridState extends State<ProductsGrid> {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
           if (!isFinal) {
+            log("called from grid widget");
             widget.reCallApi();
           }
         }
