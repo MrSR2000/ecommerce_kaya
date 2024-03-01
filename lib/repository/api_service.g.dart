@@ -48,9 +48,9 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<ProductOuterModel> getLatestProducts() async {
+  Future<ProductOuterModel> getLatestProducts(String page) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio

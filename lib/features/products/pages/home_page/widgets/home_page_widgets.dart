@@ -54,32 +54,40 @@ Drawer drawer(BuildContext context) {
 }
 
 Widget body() {
-  return SingleChildScrollView(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SearchBarWidget(),
-        sliderWidget(),
-        gap10,
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 15,
-            right: 15,
-            top: 10,
-          ),
-          child: textWidget(
-            text: "Latest Products",
-            textSize: TextSize.large,
-            fontWeight: FontWeight.bold,
+  ProductBloc homepageBloc = sl<ProductBloc>();
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const SearchBarWidget(),
+      sliderWidget(),
+      gap10,
+      Padding(
+        padding: const EdgeInsets.only(
+          left: 15,
+          right: 15,
+          top: 10,
+        ),
+        child: textWidget(
+          text: "Latest Products",
+          textSize: TextSize.large,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      BlocProvider(
+        create: (context) => homepageBloc..add(LatestProductFetchEvent()),
+        child: Expanded(
+          child: ProductsGrid(
+            reCallApi: () {
+              homepageBloc.add(
+                LatestProductFetchEvent(),
+              );
+            },
+            // productEvent: LatestProductFetchEvent(),
           ),
         ),
-        BlocProvider(
-          create: (context) =>
-              sl<ProductBloc>()..add(LatestProductFetchEvent()),
-          child: productsGrid(),
-        ),
-      ],
-    ),
+      ),
+    ],
   );
 }
 

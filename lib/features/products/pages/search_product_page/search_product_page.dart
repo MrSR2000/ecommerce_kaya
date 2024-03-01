@@ -16,10 +16,15 @@ class SearchProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProductBloc _searchProductBloc = sl<ProductBloc>();
+
     return BlocProvider(
       create: (context) =>
-          sl<ProductBloc>()..add(SearchProductsEvent(searchQuery: query)),
-      child: productsGrid(),
+          _searchProductBloc..add(SearchProductsEvent(searchQuery: query)),
+      child: ProductsGrid(
+        reCallApi: _searchProductBloc
+          ..add(SearchProductsEvent(searchQuery: query)),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
 import 'package:kaya/core/resources/components/gaps.dart';
@@ -22,9 +23,14 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       child: bodyPadding(
         child: InkWell(
           onTap: () {
-            showSearch(
+            // showSearch(
+            //   context: context,
+            //   delegate: Search(),
+            // );
+
+            pushPage(
               context: context,
-              delegate: Search(),
+              page: const SearchPage(),
             );
           },
           child: roundedBorderContainer(

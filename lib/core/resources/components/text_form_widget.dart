@@ -42,6 +42,7 @@ class TextFormWidget extends StatelessWidget {
   final String? customErrorMessage;
   final bool obstructText;
   final bool noSpace;
+  final Function(String)? onChanged;
   final TextAlign textAlign;
   const TextFormWidget({
     Key? key,
@@ -67,6 +68,7 @@ class TextFormWidget extends StatelessWidget {
     this.obstructText = false,
     this.noSpace = false,
     this.textAlign = TextAlign.start,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -95,6 +97,7 @@ class TextFormWidget extends StatelessWidget {
           currentFocus.unfocus();
         }
       },
+      onChanged: onChanged,
       style: textStyle,
       maxLines: maxLines,
       minLines: minLines,

@@ -17,7 +17,7 @@ abstract class ApiService {
   Future<SliderModel> getSlider();
 
   @GET('product/latest')
-  Future<ProductOuterModel> getLatestProducts();
+  Future<ProductOuterModel> getLatestProducts(@Query("page") String page);
 
   @GET('product/for-public/{slug}')
   Future<ProductDetailModel> getProductDetail(@Path() String slug);

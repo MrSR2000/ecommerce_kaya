@@ -6,12 +6,28 @@ sealed class ProductState {}
 //product
 final class ProductInitial extends ProductState {}
 
-final class ProductLoadingState extends ProductState {}
+final class ProductLoadingState extends ProductState {
+  final List<ProductModel> oldProducts;
+  final bool isFirstFetch;
+
+  ProductLoadingState({
+    required this.oldProducts,
+    this.isFirstFetch = false,
+  });
+}
 
 final class ProductSuccessfulState extends ProductState {
-  final ProductOuterModel product;
+  // final ProductOuterModel product;
 
-  ProductSuccessfulState({required this.product});
+  // ProductSuccessfulState({required this.product});
+
+  final List<ProductModel> products;
+  final bool isFinalPage;
+
+  ProductSuccessfulState({
+    required this.products,
+    this.isFinalPage = false,
+  });
 }
 
 final class ProductErrorState extends ProductState {

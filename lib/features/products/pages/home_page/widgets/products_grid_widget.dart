@@ -1,54 +1,110 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
 import 'package:kaya/core/resources/components/center_circular_loading_widget.dart';
-import 'package:kaya/core/resources/components/contact_developer_widget.dart';
 import 'package:kaya/core/resources/components/elevated_button_style.dart';
 import 'package:kaya/core/resources/components/gaps.dart';
 import 'package:kaya/core/resources/components/network_image_widget.dart';
 import 'package:kaya/core/resources/components/rounded_border_container.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
+import 'package:kaya/core/resources/screen_size.dart';
 import 'package:kaya/features/products/pages/product_detail_page/product_detail_page.dart';
 import 'package:kaya/models/product_model/product_model.dart';
 
 import '../../../../../bloc/product/bloc/product_bloc.dart';
 
-Widget productsGrid() {
-  // ProductBloc productDetailBloc = sl<ProductBloc>();
+class ProductsGrid extends StatefulWidget {
+  final dynamic reCallApi;
+  ProductsGrid({
+    super.key,
+    required this.reCallApi,
+  });
 
-  return bodyPadding(
-    child: BlocBuilder<ProductBloc, ProductState>(
-      builder: (context, state) {
-        switch (state.runtimeType) {
-          case ProductLoadingState:
+  @override
+  State<ProductsGrid> createState() => _ProductsGridState();
+}
+
+class _ProductsGridState extends State<ProductsGrid> {
+  late ScrollController scrollController;
+  bool isFinal = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return bodyPadding(
+      child: BlocBuilder<ProductBloc, ProductState>(
+        builder: (context, state) {
+          if (state is ProductInitial) {
+            return SizedBox(
+              height: getDeviceSize(context: context).deviceHeight,
+              child: Center(
+                child: textWidget(
+                  text: "Search...",
+                  textSize: TextSize.medium,
+                ),
+              ),
+            );
+          }
+
+          if (state is ProductLoadingState && state.isFirstFetch) {
             return centerCircularLoadingWidget();
+          }
 
-          case ProductSuccessfulState:
-            var successState = state as ProductSuccessfulState;
-            ProductOuterModel productOuter = successState.product;
-            List<ProductModel> products = productOuter.data!.docs!;
+          List<ProductModel> products = [];
+          bool isLoading = true;
 
-            return products.isEmpty
-                ? Center(
-                    child: textWidget(
-                      text: "No Items Found",
-                      textSize: TextSize.medium,
-                    ),
-                  )
-                : GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 2 / 3.7,
-                    ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
+          if (state is ProductLoadingState) {
+            products = state.oldProducts;
+            isLoading = true;
+          } else if (state is ProductErrorState) {
+            return textWidget(
+              text: state.error,
+              textSize: TextSize.medium,
+            );
+          } else if (state is ProductSuccessfulState) {
+            // var successState = state as ProductSuccessfulState;
+            // ProductOuterModel productOuter = successState.product;
+            // List<ProductModel> products = productOuter.data!.docs!;
+            // List<ProductModel> products = state.products;
+
+            products = state.products;
+            isFinal = state.isFinalPage;
+          }
+
+          log("in UI part this is final page = $isFinal");
+
+          return products.isEmpty
+              ? Center(
+                  child: textWidget(
+                    text: "No Items Found",
+                    textSize: TextSize.medium,
+                  ),
+                )
+              : GridView.builder(
+                  controller: scrollController,
+                  shrinkWrap: true,
+                  // physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 2 / 3.6,
+                  ),
+                  itemCount: products.length +
+                      (isFinal
+                          ? 0
+                          : isLoading
+                              ? 1
+                              : 0),
+                  itemBuilder: (context, index) {
+                    log("total product = ${products.length} ");
+
+                    if (index < products.length) {
+                      log("here = $index");
                       ProductModel product = products[index];
 
                       return InkWell(
@@ -125,21 +181,41 @@ Widget productsGrid() {
                           ),
                         ),
                       );
-                    },
-                  );
+                    } else {
+                      log("loading");
+                      Timer(
+                        const Duration(milliseconds: 30),
+                        () {
+                          scrollController.jumpTo(
+                              scrollController.position.maxScrollExtent - 20);
+                        },
+                      );
 
-          case ProductErrorState:
-            var errorState = state as ProductErrorState;
+                      return centerCircularLoadingWidget();
+                    }
+                  },
+                );
+        },
+      ),
+    );
+  }
 
-            return textWidget(
-              text: errorState.error,
-              textSize: TextSize.medium,
-            );
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    setupScrollController();
+    super.initState();
+  }
 
-          default:
-            return contactDeveloperWidget();
+  void setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels != 0) {
+          if (!isFinal) {
+            widget.reCallApi();
+          }
         }
-      },
-    ),
-  );
+      }
+    });
+  }
 }

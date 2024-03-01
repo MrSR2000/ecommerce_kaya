@@ -122,17 +122,9 @@ class _CategoryExpansionWidgetState extends State<CategoryExpansionWidget> {
                                           onTap: () {
                                             pushPage(
                                               context: context,
-                                              page: BlocProvider(
-                                                create: (context) =>
-                                                    sl<ProductBloc>()
-                                                      ..add(
-                                                        ProductOfCategoryFetchEvent(
-                                                          slug: category.slug,
-                                                        ),
-                                                      ),
-                                                child: ProductOfCategoryPage(
-                                                  categoryName: category.title,
-                                                ),
+                                              page: ProductOfCategoryPage(
+                                                categoryName: category.title,
+                                                slug: category.slug,
                                               ),
                                             );
                                           },

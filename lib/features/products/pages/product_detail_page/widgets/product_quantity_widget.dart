@@ -63,6 +63,19 @@ class _ProductQuantityWidgetState extends State<ProductQuantityWidget> {
                 controller: _qtyController,
                 hintText: "",
                 textAlign: TextAlign.center,
+                textInputType: TextInputType.number,
+                onChanged: (quantityValue) {
+                  log("value = $quantityValue");
+
+                  if (int.parse(quantityValue) > widget.maxQty) {
+                    _qtyController.text = widget.maxQty.toString();
+
+                    Fluttertoast.showToast(
+                      msg: "Max Quantity is ${widget.maxQty}",
+                      webPosition: "center",
+                    );
+                  }
+                },
               ),
             ),
             gap5,

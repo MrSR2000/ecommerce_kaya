@@ -13,6 +13,8 @@ part 'product_event.dart';
 part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
+  int page = 1;
+
   ProductBloc() : super(ProductInitial()) {
     on<LatestProductFetchEvent>(latestProductFetchEvent);
     on<ProductDetailFetchEvent>(productDetailFetchEvent);
@@ -22,14 +24,37 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   FutureOr<void> latestProductFetchEvent(
       LatestProductFetchEvent event, Emitter<ProductState> emit) async {
-    emit(ProductLoadingState());
+    if (state is ProductLoadingState) return;
+
+    final currentState = state;
+    var oldProducts = <ProductModel>[];
+
+    if (currentState is ProductSuccessfulState) {
+      oldProducts = currentState.products;
+    }
+    emit(
+      ProductLoadingState(
+        oldProducts: oldProducts,
+        isFirstFetch: page == 1,
+      ),
+    );
     try {
       ProductOuterModel productOuter =
-          await sl<ApiService>().getLatestProducts();
+          await sl<ApiService>().getLatestProducts(page.toString());
 
       log("latest  product success = $productOuter");
 
-      emit(ProductSuccessfulState(product: productOuter));
+      page++;
+
+      final products = (state as ProductLoadingState).oldProducts;
+      products.addAll(productOuter.data!.docs!);
+
+      log("this is final page = ${!productOuter.data!.pagination!.nextPage!}");
+
+      emit(ProductSuccessfulState(
+        products: products,
+        isFinalPage: !productOuter.data!.pagination!.nextPage!,
+      ));
     } catch (e) {
       log("Latest product error = $e");
 
@@ -59,7 +84,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   FutureOr<void> searchProductsEvent(
       SearchProductsEvent event, Emitter<ProductState> emit) async {
-    emit(ProductLoadingState());
+    // emit(ProductLoadingState());
 
     try {
       ProductOuterModel productOuter =
@@ -68,7 +93,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       log("search product success = $productOuter");
 
       // emit(SearchProductSuccessfulState(searchProduct: productOuter));
-      emit(ProductSuccessfulState(product: productOuter));
+      // emit(ProductSuccessfulState(product: productOuter));
     } catch (e) {
       log("search product error = $e");
     }
@@ -76,7 +101,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   FutureOr<void> productOfCategoryFetchEvent(
       ProductOfCategoryFetchEvent event, Emitter<ProductState> emit) async {
-    emit(ProductLoadingState());
+    // emit(ProductLoadingState());
 
     try {
       ProductOuterModel productOuterModel =
@@ -84,7 +109,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
       log("product by category success = $productOuterModel");
 
-      emit(ProductSuccessfulState(product: productOuterModel));
+      // emit(ProductSuccessfulState(product: productOuterModel));
     } catch (e) {
       log("erorr in product by category = $e");
 
