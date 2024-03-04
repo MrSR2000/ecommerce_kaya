@@ -6,9 +6,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kaya/core/constants/constants.dart';
 import 'package:kaya/models/authentication_model/signup_model.dart';
+import 'package:kaya/models/user_model/user_detail_model.dart';
 import 'package:kaya/repository/api_service.dart';
 import 'package:meta/meta.dart';
 
+import '../../core/resources/functions/authorization_format.dart';
 import '../../core/resources/functions/dio_error.dart';
 import '../../injection_container.dart';
 import '../../main.dart';
@@ -24,6 +26,7 @@ class AuthenticationBloc
     on<LoginEvent>(loginEvent);
     on<ForgotPasswordEvent>(forgotPasswordEvent);
     on<LogoutEvent>(logoutEvent);
+    on<UserDetailEvent>(userDetailEvent);
   }
 
   FutureOr<void> signUpEvent(
@@ -121,5 +124,27 @@ class AuthenticationBloc
     handleLoginChange(false);
 
     emit(LogoutSuccessState());
+  }
+
+  FutureOr<void> userDetailEvent(
+      UserDetailEvent event, Emitter<AuthenticationState> emit) async {
+    emit(UserDetailLoadingState());
+
+    try {
+      String accessToken = await getAccessTokenFormat();
+
+      UserDetailOuterModel userDetailOuterModel =
+          await sl<ApiService>().getUserDetail(accessToken);
+
+      log("get user detail success = $userDetailOuterModel");
+
+      emit(
+        UserDetailSuccessState(userDetail: userDetailOuterModel.data!),
+      );
+    } catch (e) {
+      var error = dioErrorResponse(e);
+
+      log("user detail error = $error");
+    }
   }
 }

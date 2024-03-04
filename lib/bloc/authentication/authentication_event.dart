@@ -22,3 +22,5 @@ class ForgotPasswordEvent extends AuthenticationEvent {
 }
 
 class LogoutEvent extends AuthenticationEvent {}
+
+class UserDetailEvent extends AuthenticationEvent {}

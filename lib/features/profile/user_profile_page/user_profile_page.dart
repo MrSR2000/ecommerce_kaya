@@ -3,15 +3,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:kaya/bloc/authentication/authentication_bloc.dart';
+import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/config/theme/app_themes.dart';
-import 'package:kaya/core/constants/constants.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
 import 'package:kaya/core/resources/components/elevated_button_style.dart';
 import 'package:kaya/core/resources/components/gaps.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
 import 'package:kaya/features/authentication/login_page/login_page.dart';
+import 'package:kaya/features/profile/user_detail_page/user_detail_page.dart';
 import 'package:kaya/main.dart';
 
 import '../../../injection_container.dart';
@@ -74,9 +74,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 optionsWidget(
                     title: "Information",
                     ontap: () {
-                      dynamic userId = sl<GetStorage>().read(userIdKey);
-
-                      log("user id = $userId");
+                      pushPage(context: context, page: const UserDetailpage());
                     }),
                 gap5,
                 optionsWidget(title: "Address Book", ontap: () {}),

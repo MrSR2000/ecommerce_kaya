@@ -54,3 +54,18 @@ class ForgotPasswordErrorState extends AuthenticationState {
 class LogoutLoadingState extends AuthenticationState {}
 
 class LogoutSuccessState extends AuthenticationState {}
+
+//user detail
+class UserDetailLoadingState extends AuthenticationState {}
+
+class UserDetailSuccessState extends AuthenticationState {
+  final UserDetailModel userDetail;
+
+  UserDetailSuccessState({required this.userDetail});
+}
+
+class UserDetailErrorState extends AuthenticationState {
+  final String error;
+
+  UserDetailErrorState({required this.error});
+}
