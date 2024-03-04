@@ -21,8 +21,8 @@ Widget networkImageWidget({
       child: Image.network(
         imageUrl,
         fit: boxFit,
-        cacheHeight: 200,
-        cacheWidth: 200,
+        cacheHeight: 700,
+        cacheWidth: 700,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) {
             return child;
