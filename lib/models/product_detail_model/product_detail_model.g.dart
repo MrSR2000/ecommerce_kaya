@@ -27,7 +27,7 @@ SizeVariantsModel _$SizeVariantsModelFromJson(Map<String, dynamic> json) =>
       expiresAt: json['expiresAt'] == null
           ? null
           : DateTime.parse(json['expiresAt'] as String),
-      id: json['id'] as String?,
+      id: json['_id'] as String?,
     );
 
 Map<String, dynamic> _$SizeVariantsModelToJson(SizeVariantsModel instance) =>
@@ -51,7 +51,7 @@ Map<String, dynamic> _$SizeVariantsModelToJson(SizeVariantsModel instance) =>
 
 CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
     CategoryModel(
-      json['id'] as String?,
+      json['_id'] as String?,
       json['slug'] as String?,
       json['title'] as String?,
       json['level'] as int?,
@@ -76,7 +76,7 @@ Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
     };
 
 BrandModel _$BrandModelFromJson(Map<String, dynamic> json) => BrandModel(
-      id: json['id'] as String?,
+      id: json['_id'] as String?,
       slug: json['slug'] as String?,
       name: json['name'] as String?,
     );
@@ -90,7 +90,7 @@ Map<String, dynamic> _$BrandModelToJson(BrandModel instance) =>
 
 ColorAttributeModel _$ColorAttributeModelFromJson(Map<String, dynamic> json) =>
     ColorAttributeModel(
-      id: json['id'] as String?,
+      id: json['_id'] as String?,
       name: json['name'] as String?,
       colorValue: json['colorValue'] as String?,
     );
@@ -105,7 +105,7 @@ Map<String, dynamic> _$ColorAttributeModelToJson(
 
 ColorVariantsModel _$ColorVariantsModelFromJson(Map<String, dynamic> json) =>
     ColorVariantsModel(
-      json['id'] as String?,
+      json['_id'] as String?,
       json['color'] == null
           ? null
           : ColorAttributeModel.fromJson(json['color'] as Map<String, dynamic>),
@@ -146,7 +146,7 @@ Map<String, dynamic> _$ColorVariantsModelToJson(ColorVariantsModel instance) =>
     };
 
 DataModel _$DataModelFromJson(Map<String, dynamic> json) => DataModel(
-      json['id'] as String?,
+      json['_id'] as String?,
       json['slug'] as String?,
       json['category'] == null
           ? null

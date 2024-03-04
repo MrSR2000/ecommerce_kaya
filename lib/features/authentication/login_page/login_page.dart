@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -114,11 +112,7 @@ class _LoginPageState extends State<LoginPage> {
 
                           handleLoginChange(isLoggedIn);
 
-
-    log("user logged in from login page- $isLoggedIn");
-
-
-                          Navigator.pop(context);
+                          Navigator.pop(context, true);
 
                           Fluttertoast.showToast(
                             msg: "Login successful",

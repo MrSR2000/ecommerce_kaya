@@ -8,6 +8,7 @@ import 'package:kaya/core/resources/components/center_circular_loading_widget.da
 import 'package:kaya/core/resources/components/contact_developer_widget.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
 import 'package:kaya/features/authentication/login_page/login_page.dart';
+import 'package:kaya/features/notification/notification_page/notification_page.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/category_expansion_widget.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/search_bar_widget.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/slider_widget.dart';
@@ -101,22 +102,17 @@ AppBar appBar({required BuildContext context}) {
   return AppBar(
     title: const Text("KAYA"),
     actions: [
+      gap10,
       InkWell(
         onTap: () {
-          isLoggedIn
-              ? log("user  logged in already = $isLoggedIn ")
-              : pushPage(
-                  context: context,
-                  page: const LoginPage(),
-                );
+          pushPage(
+            context: context,
+            page: isLoggedIn ? const NotificationPage() : const LoginPage(),
+          );
         },
-        child: Icon(Icons.person_outline),
+        child: const Icon(Icons.notifications_outlined),
       ),
-      gap5,
-      Icon(Icons.shopping_bag_outlined),
-      gap5,
-      Icon(Icons.notifications_outlined),
-      gap10,
+      gap15,
     ],
   );
 }

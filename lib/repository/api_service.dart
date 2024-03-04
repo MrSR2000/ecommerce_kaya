@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:kaya/models/user_model/user_detail_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -26,6 +27,9 @@ abstract class ApiService {
   @POST('auth/forgot-password')
   Future<dynamic> forgotPassword(
       @Body() Map<String, dynamic> forgotPasswordBody);
+
+  @GET('auth/my-profile')
+  Future<UserDetailOuterModel> getUserDetail(@Header("Authorization") String accessToken);
 
   //slider
   @GET('slider/for-public')

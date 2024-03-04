@@ -57,6 +57,7 @@ dependencies:
   #local storage
   flutter_secure_storage: ^4.2.1
   get_storage: ^2.1.1
+  persistent_bottom_nav_bar: ^5.0.2
 
 dev_dependencies:
   flutter_test:

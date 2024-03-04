@@ -1,41 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_model.dart';
+part of 'user_detail_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoginRequestModel _$LoginRequestModelFromJson(Map<String, dynamic> json) =>
-    LoginRequestModel(
-      emailOrContactNumber: json['emailOrContactNumber'] as String,
-      password: json['password'] as String,
-    );
-
-Map<String, dynamic> _$LoginRequestModelToJson(LoginRequestModel instance) =>
-    <String, dynamic>{
-      'emailOrContactNumber': instance.emailOrContactNumber,
-      'password': instance.password,
-    };
-
-LoginResponseOuterModel _$LoginResponseOuterModelFromJson(
+UserDetailOuterModel _$UserDetailOuterModelFromJson(
         Map<String, dynamic> json) =>
-    LoginResponseOuterModel(
-      title: json['title'] as String,
-      message: json['message'] as String,
-      data: LoginResponseModel.fromJson(json['data'] as Map<String, dynamic>),
+    UserDetailOuterModel(
+      data: json['data'] == null
+          ? null
+          : UserDetailModel.fromJson(json['data'] as Map<String, dynamic>),
+      message: json['message'] as String?,
+      title: json['title'] as String?,
     );
 
-Map<String, dynamic> _$LoginResponseOuterModelToJson(
-        LoginResponseOuterModel instance) =>
+Map<String, dynamic> _$UserDetailOuterModelToJson(
+        UserDetailOuterModel instance) =>
     <String, dynamic>{
       'title': instance.title,
       'message': instance.message,
       'data': instance.data,
     };
 
-LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
-    LoginResponseModel(
+UserDetailModel _$UserDetailModelFromJson(Map<String, dynamic> json) =>
+    UserDetailModel(
       id: json['_id'] as String?,
       slug: json['slug'] as String?,
       userType: (json['userType'] as List<dynamic>?)
@@ -61,20 +51,13 @@ LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      v: json['v'] as int?,
       emailVerifiedAt: json['emailVerifiedAt'] == null
           ? null
           : DateTime.parse(json['emailVerifiedAt'] as String),
-      accessToken: json['accessToken'] as String?,
-      accessTokenExpireIn: json['accessTokenExpireIn'] == null
-          ? null
-          : DateTime.parse(json['accessTokenExpireIn'] as String),
-      refreshToken: json['refreshToken'] as String?,
-      refreshTokenExpireIn: json['refreshTokenExpireIn'] == null
-          ? null
-          : DateTime.parse(json['refreshTokenExpireIn'] as String),
     );
 
-Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) =>
+Map<String, dynamic> _$UserDetailModelToJson(UserDetailModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'slug': instance.slug,
@@ -93,9 +76,6 @@ Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) =>
       'isDeleted': instance.isDeleted,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'v': instance.v,
       'emailVerifiedAt': instance.emailVerifiedAt?.toIso8601String(),
-      'accessToken': instance.accessToken,
-      'accessTokenExpireIn': instance.accessTokenExpireIn?.toIso8601String(),
-      'refreshToken': instance.refreshToken,
-      'refreshTokenExpireIn': instance.refreshTokenExpireIn?.toIso8601String(),
     };
