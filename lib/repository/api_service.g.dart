@@ -48,12 +48,42 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<dynamic> login(LoginRequestModel loginRequestModel) async {
+  Future<LoginResponseOuterModel> login(
+      LoginRequestModel loginRequestModel) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(loginRequestModel.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<LoginResponseOuterModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'auth/login',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = LoginResponseOuterModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> forgotPassword(
+      Map<String, dynamic> forgotPasswordBody) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(forgotPasswordBody);
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -61,7 +91,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'auth/login',
+          'auth/forgot-password',
           queryParameters: queryParameters,
           data: _data,
         )

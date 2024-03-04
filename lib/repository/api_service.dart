@@ -20,7 +20,12 @@ abstract class ApiService {
   Future<dynamic> signup(@Body() SignUpRequestModel signupModel);
 
   @POST('auth/login')
-  Future<dynamic> login(@Body() LoginRequestModel loginRequestModel);
+  Future<LoginResponseOuterModel> login(
+      @Body() LoginRequestModel loginRequestModel);
+
+  @POST('auth/forgot-password')
+  Future<dynamic> forgotPassword(
+      @Body() Map<String, dynamic> forgotPasswordBody);
 
   //slider
   @GET('slider/for-public')

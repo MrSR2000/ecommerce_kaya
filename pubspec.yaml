@@ -54,6 +54,10 @@ dependencies:
   fluttertoast: ^8.2.4
   flutter_widget_from_html: ^0.14.11
 
+  #local storage
+  flutter_secure_storage: ^4.2.1
+  get_storage: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

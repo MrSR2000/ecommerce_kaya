@@ -13,7 +13,10 @@ class LoginEvent extends AuthenticationEvent {
   final LoginRequestModel loginRequestModel;
 
   LoginEvent({required this.loginRequestModel});
-
 }
 
+class ForgotPasswordEvent extends AuthenticationEvent {
+  final String email;
 
+  ForgotPasswordEvent({required this.email});
+}

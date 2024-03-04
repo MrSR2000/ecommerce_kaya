@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kaya/config/theme/app_themes.dart';
-import 'package:kaya/features/authentication/login_page/login_page.dart';
-import 'package:kaya/features/products/pages/home_page/home_page.dart';
+import 'package:kaya/core/constants/constants.dart';
 import 'package:kaya/injection_container.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+
+import 'features/products/pages/home_page/home_page.dart';
+
+bool isLoggedIn = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,15 +16,23 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+handleLoginChange(bool loggedIn) {
+  isLoggedIn = loggedIn;
+}
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'KAYA',
       theme: theme(),
       home: LoaderOverlay(
         useDefaultLoading: false,
@@ -37,5 +49,21 @@ class MyApp extends StatelessWidget {
         // child: const LoginPage(),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    checkUserLoggedIn();
+  }
+
+  checkUserLoggedIn() async {
+    String? accessToken =
+        await sl<FlutterSecureStorage>().read(key: accessTokenKey);
+
+    if (accessToken != null && accessToken.isNotEmpty) {
+      isLoggedIn = true;
+    }
   }
 }

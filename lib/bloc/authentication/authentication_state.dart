@@ -34,3 +34,18 @@ class LoginErrorState extends AuthenticationState {
 
   LoginErrorState({required this.error});
 }
+
+//forgot password
+class ForgotPasswordLoadingState extends AuthenticationState {}
+
+class ForgotPasswordSuccessState extends AuthenticationState {
+  final dynamic forgotPasswordResponse;
+
+  ForgotPasswordSuccessState({required this.forgotPasswordResponse});
+}
+
+class ForgotPasswordErrorState extends AuthenticationState {
+  final String error;
+
+  ForgotPasswordErrorState({required this.error});
+}

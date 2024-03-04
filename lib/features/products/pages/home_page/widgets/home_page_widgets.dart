@@ -1,11 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/core/resources/components/center_circular_loading_widget.dart';
 import 'package:kaya/core/resources/components/contact_developer_widget.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
+import 'package:kaya/features/authentication/login_page/login_page.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/category_expansion_widget.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/search_bar_widget.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/slider_widget.dart';
+import 'package:kaya/main.dart';
 import 'package:kaya/models/category_model/category_model.dart';
 
 import '../../../../../bloc/product/bloc/product_bloc.dart';
@@ -91,11 +97,21 @@ Widget body() {
   );
 }
 
-AppBar appBar() {
+AppBar appBar({required BuildContext context}) {
   return AppBar(
     title: const Text("KAYA"),
-    actions: const [
-      Icon(Icons.person_outline),
+    actions: [
+      InkWell(
+        onTap: () {
+          isLoggedIn
+              ? log("user  logged in already = $isLoggedIn ")
+              : pushPage(
+                  context: context,
+                  page: const LoginPage(),
+                );
+        },
+        child: Icon(Icons.person_outline),
+      ),
       gap5,
       Icon(Icons.shopping_bag_outlined),
       gap5,

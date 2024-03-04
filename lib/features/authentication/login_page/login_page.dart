@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,7 +12,9 @@ import 'package:kaya/core/resources/components/rounded_border_container.dart';
 import 'package:kaya/core/resources/components/text_form_widget.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
 import 'package:kaya/core/resources/screen_size.dart';
+import 'package:kaya/features/authentication/forgot_password_page/forgot_password_page.dart';
 import 'package:kaya/features/authentication/signup_page/signup_page.dart';
+import 'package:kaya/main.dart';
 import 'package:kaya/models/authentication_model/login_model.dart';
 
 import '../../../injection_container.dart';
@@ -106,6 +110,14 @@ class _LoginPageState extends State<LoginPage> {
                         if (state is LoginSuccessState) {
                           // pushReplacePage(context: context, page: page)
 
+                          isLoggedIn = true;
+
+                          handleLoginChange(isLoggedIn);
+
+
+    log("user logged in from login page- $isLoggedIn");
+
+
                           Navigator.pop(context);
 
                           Fluttertoast.showToast(
@@ -176,7 +188,14 @@ class _LoginPageState extends State<LoginPage> {
                 gap10,
                 Center(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      pushPage(
+                        context: context,
+                        page: ForgotPasswordPage(
+                          email: _emailController.text,
+                        ),
+                      );
+                    },
                     child: textWidget(
                       text: "Forgot Your Password?",
                       textSize: TextSize.small,
