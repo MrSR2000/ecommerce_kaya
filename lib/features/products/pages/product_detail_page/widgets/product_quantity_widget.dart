@@ -105,7 +105,7 @@ class _ProductQuantityWidgetState extends State<ProductQuantityWidget> {
   void initState() {
     super.initState();
 
-    _qtyController = TextEditingController(text: "0");
+    _qtyController = TextEditingController(text: "1");
 
     log("max order = ${widget.maxQty}");
   }

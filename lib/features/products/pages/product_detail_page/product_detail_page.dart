@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kaya/bloc/cart/cart_bloc.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
 import 'package:kaya/core/resources/components/center_circular_loading_widget.dart';
@@ -13,6 +15,7 @@ import 'package:kaya/core/resources/components/image_slider.dart';
 import 'package:kaya/core/resources/components/rounded_border_container.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
 import 'package:kaya/features/products/pages/product_detail_page/widgets/product_detail_page_widget.dart';
+import 'package:kaya/models/cart_model/add_to_cart_request_model.dart';
 import 'package:kaya/models/product_detail_model/product_detail_model.dart';
 
 import '../../../../bloc/product/bloc/product_bloc.dart';
@@ -29,7 +32,9 @@ class ProductDetailpage extends StatelessWidget {
   });
 
   int selectedVariationIndex = 0;
-  int productQty = 0;
+  int productQty = 1;
+
+  late CartBloc _cartBloc = sl<CartBloc>();
 
   void handleVariationChange(int newValue) {
     // Do something with the changed value in the parent widget
@@ -71,12 +76,56 @@ class ProductDetailpage extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   style: elevatedButtonStyle,
-                  onPressed: () {},
-                  child: textWidget(
-                    text: "Add to Cart",
-                    textSize: TextSize.medium,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                  onPressed: () {
+                    AddToCartRequestModel addToCartRequestModel =
+                        AddToCartRequestModel(
+                      product: productDetail.data!.id!,
+                      quantity: productQty,
+                      variantType: productDetail.data!.variantType!,
+                      variantId: productDetail
+                          .data!.colorVariants![selectedVariationIndex].id!,
+                      refCode: "",
+                    );
+
+                    _cartBloc.add(
+                      AddToCartEvent(
+                          addToCartRequestModel: addToCartRequestModel),
+                    );
+                  },
+                  child: BlocConsumer<CartBloc, CartState>(
+                    bloc: _cartBloc,
+                    listener: (context, state) {
+                      if (state is AddToCartSuccessState) {
+                        Fluttertoast.showToast(
+                          msg: "Added to Cart",
+                          gravity: ToastGravity.CENTER,
+                        );
+                      }
+
+                      if (state is AddToCartErrorState) {
+                        Fluttertoast.showToast(
+                          msg: state.error,
+                          gravity: ToastGravity.CENTER,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AddToCartLoadingState) {
+                        return const SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        );
+                      }
+                      return textWidget(
+                        text: "Add to Cart",
+                        textSize: TextSize.medium,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -165,10 +214,11 @@ class ProductDetailpage extends StatelessWidget {
                 ProductQuantityWidget(
                   onValueChanged: handleQtyVariationChange,
                   maxQty: productDetail.data!.colorVariants!.isNotEmpty
-                      ? productDetail.data!.colorVariants![productQty].maxOrder!
+                      ? productDetail.data!
+                          .colorVariants![selectedVariationIndex].maxOrder!
                       : productDetail.data!.sizeVariants!.isNotEmpty
-                          ? productDetail
-                              .data!.sizeVariants![productQty].maxOrder!
+                          ? productDetail.data!
+                              .sizeVariants![selectedVariationIndex].maxOrder!
                           : 0,
                 ),
                 gap15,
