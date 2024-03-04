@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/constants/constants.dart';
+import 'package:kaya/features/main_page.dart';
 import 'package:kaya/injection_container.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-
-import 'features/products/pages/home_page/home_page.dart';
 
 bool isLoggedIn = false;
 
@@ -45,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         },
-        child: const HomePage(),
+        child: const MainPage(),
         // child: const LoginPage(),
       ),
     );
