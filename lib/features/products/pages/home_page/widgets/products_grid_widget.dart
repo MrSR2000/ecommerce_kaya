@@ -216,12 +216,20 @@ class _ProductsGridState extends State<ProductsGrid> {
 
   void setupScrollController() {
     scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels != 0) {
-          if (!isFinal) {
-            log("called from grid widget");
-            widget.reCallApi();
-          }
+      // if (scrollController.position.atEdge) {
+      //   if (scrollController.position.pixels != 0) {
+      // if (!isFinal) {
+      //   log("called from grid widget");
+      //   widget.reCallApi();
+      // }
+      //   }
+      // }
+
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (!isFinal) {
+          log("called from grid widget");
+          widget.reCallApi();
         }
       }
     });
