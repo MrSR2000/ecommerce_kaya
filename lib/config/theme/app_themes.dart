@@ -70,7 +70,7 @@ SizedBox spaceBetweenTopics() {
   );
 }
 
-const bgColor = Color.fromARGB(255, 53, 66, 48);
+// const bgColor = Color.fromARGB(255, 53, 66, 48);
 
 const lightWhiteColor = Color.fromARGB(255, 250, 250, 250);
 
@@ -109,3 +109,5 @@ Color blue = const Color.fromARGB(255, 32, 40, 86);
 Color orange = const Color.fromARGB(255, 249, 86, 70);
 Color purple = const Color.fromARGB(255, 126, 99, 202);
 Color cyan = const Color.fromARGB(255, 33, 236, 185);
+
+Color bgColor = const Color.fromARGB(255, 245, 245, 245);
