@@ -49,3 +49,8 @@ class ForgotPasswordErrorState extends AuthenticationState {
 
   ForgotPasswordErrorState({required this.error});
 }
+
+//logout
+class LogoutLoadingState extends AuthenticationState {}
+
+class LogoutSuccessState extends AuthenticationState {}

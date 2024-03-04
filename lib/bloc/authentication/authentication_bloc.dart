@@ -11,6 +11,7 @@ import 'package:meta/meta.dart';
 
 import '../../core/resources/functions/dio_error.dart';
 import '../../injection_container.dart';
+import '../../main.dart';
 import '../../models/authentication_model/login_model.dart';
 
 part 'authentication_event.dart';
@@ -22,6 +23,7 @@ class AuthenticationBloc
     on<SignUpEvent>(signUpEvent);
     on<LoginEvent>(loginEvent);
     on<ForgotPasswordEvent>(forgotPasswordEvent);
+    on<LogoutEvent>(logoutEvent);
   }
 
   FutureOr<void> signUpEvent(
@@ -63,6 +65,7 @@ class AuthenticationBloc
       sl<GetStorage>().write(fullNameKey, response.data.fullName);
       sl<GetStorage>().write(isEmailVerifiedKey, response.data.fullName);
       sl<GetStorage>().write(fullNameKey, response.data.fullName);
+      sl<GetStorage>().write(userIdKey, response.data.id);
 
       emit(LoginSuccessState(loginResponse: response));
     } catch (e) {
@@ -95,5 +98,28 @@ class AuthenticationBloc
 
       emit(ForgotPasswordErrorState(error: error));
     }
+  }
+
+  FutureOr<void> logoutEvent(
+      LogoutEvent event, Emitter<AuthenticationState> emit) async {
+    emit(LogoutLoadingState());
+
+    log("logout");
+
+    //delete values in secure storage
+    sl<FlutterSecureStorage>().delete(key: accessTokenKey);
+    sl<FlutterSecureStorage>().delete(key: refreshTokenKey);
+
+    //delete storage
+    sl<GetStorage>().remove(emailKey);
+    sl<GetStorage>().remove(fullNameKey);
+    sl<GetStorage>().remove(isEmailVerifiedKey);
+    sl<GetStorage>().remove(fullNameKey);
+
+    log("logout done");
+
+    handleLoginChange(false);
+
+    emit(LogoutSuccessState());
   }
 }

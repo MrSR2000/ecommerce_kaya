@@ -20,3 +20,5 @@ class ForgotPasswordEvent extends AuthenticationEvent {
 
   ForgotPasswordEvent({required this.email});
 }
+
+class LogoutEvent extends AuthenticationEvent {}
