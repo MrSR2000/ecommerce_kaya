@@ -19,3 +19,18 @@ class SignUpErrorState extends AuthenticationState {
 
   SignUpErrorState({required this.error});
 }
+
+//login
+class LoginLoadingState extends AuthenticationState {}
+
+class LoginSuccessState extends AuthenticationState {
+  final dynamic loginResponse;
+
+  LoginSuccessState({required this.loginResponse});
+}
+
+class LoginErrorState extends AuthenticationState {
+  final String error;
+
+  LoginErrorState({required this.error});
+}

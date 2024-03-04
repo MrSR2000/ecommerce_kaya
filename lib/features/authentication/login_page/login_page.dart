@@ -1,8 +1,7 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kaya/bloc/authentication/authentication_bloc.dart';
 import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/resources/components/elevated_button_style.dart';
@@ -12,6 +11,9 @@ import 'package:kaya/core/resources/components/text_form_widget.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
 import 'package:kaya/core/resources/screen_size.dart';
 import 'package:kaya/features/authentication/signup_page/signup_page.dart';
+import 'package:kaya/models/authentication_model/login_model.dart';
+
+import '../../../injection_container.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,6 +28,10 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _showPassword = false;
 
+  final _formKey = GlobalKey<FormState>();
+
+  late AuthenticationBloc _loginBloc;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,90 +44,149 @@ class _LoginPageState extends State<LoginPage> {
             horizontal: 20,
             vertical: 15,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              textWidget(
-                text: "Sign In",
-                textSize: TextSize.large,
-                fontWeight: FontWeight.bold,
-              ),
-              gap20,
-              TextFormWidget(
-                fillColor: Colors.white,
-                controller: _emailController,
-                hintText: "",
-                labelText: "Email",
-              ),
-              gap15,
-              TextFormWidget(
-                fillColor: Colors.white,
-                controller: _passwordController,
-                hintText: "",
-                labelText: "Password",
-                obstructText: !_showPassword,
-                suffixWidget: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _showPassword = !_showPassword;
-                    });
-                  },
-                  icon: Icon(
-                    _showPassword ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey,
-                  ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                textWidget(
+                  text: "Sign In",
+                  textSize: TextSize.large,
+                  fontWeight: FontWeight.bold,
                 ),
-              ),
-              gap20,
-              SizedBox(
-                width: double.maxFinite,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: elevatedButtonStyle,
-                  child: textWidget(
-                    text: "Sign In",
-                    textSize: TextSize.medium,
-                    color: Colors.white,
-                  ),
+                gap20,
+                TextFormWidget(
+                  fillColor: Colors.white,
+                  controller: _emailController,
+                  hintText: "",
+                  labelText: "Email",
+                  textInputType: TextInputType.emailAddress,
                 ),
-              ),
-              gap20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  textWidget(
-                    text: "Don't have an account ? ",
-                    textSize: TextSize.small,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      pushPage(
-                        context: context,
-                        page: const SignUpPage(),
-                      );
+                gap15,
+                TextFormWidget(
+                  fillColor: Colors.white,
+                  controller: _passwordController,
+                  hintText: "",
+                  labelText: "Password",
+                  obstructText: !_showPassword,
+                  suffixWidget: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword;
+                      });
                     },
-                    child: textWidget(
-                      text: "Sign Up",
-                      textSize: TextSize.small,
-                      fontWeight: FontWeight.bold,
+                    icon: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.grey,
                     ),
                   ),
-                ],
-              ),
-              gap10,
-              Center(
-                child: InkWell(
-                  onTap: () {},
-                  child: textWidget(
-                    text: "Forgot Your Password?",
-                    textSize: TextSize.small,
+                ),
+                gap20,
+                SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        LoginRequestModel loginRequestModel = LoginRequestModel(
+                          emailOrContactNumber: _emailController.text,
+                          password: _passwordController.text,
+                        );
+
+                        _loginBloc.add(
+                          LoginEvent(loginRequestModel: loginRequestModel),
+                        );
+                      }
+                    },
+                    style: elevatedButtonStyle,
+                    child:
+                        BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                      bloc: _loginBloc,
+                      listener: (context, state) {
+                        if (state is LoginSuccessState) {
+                          // pushReplacePage(context: context, page: page)
+
+                          Navigator.pop(context);
+
+                          Fluttertoast.showToast(
+                            msg: "Login successful",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+
+                        if (state is LoginErrorState) {
+                          Fluttertoast.showToast(
+                            msg: state.error,
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is LoginLoadingState) {
+                          return const SizedBox(
+                            height: 15,
+                            width: 15,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          );
+                        }
+                        return textWidget(
+                          text: "Sign In",
+                          textSize: TextSize.medium,
+                          color: Colors.white,
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              gap15,
-              Center()
-            ],
+                gap20,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textWidget(
+                      text: "Don't have an account ? ",
+                      textSize: TextSize.small,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        pushPage(
+                          context: context,
+                          page: const SignUpPage(),
+                        );
+                      },
+                      child: textWidget(
+                        text: "Sign Up",
+                        textSize: TextSize.small,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                gap10,
+                Center(
+                  child: InkWell(
+                    onTap: () {},
+                    child: textWidget(
+                      text: "Forgot Your Password?",
+                      textSize: TextSize.small,
+                    ),
+                  ),
+                ),
+                gap15,
+                // Center()
+              ],
+            ),
           ),
         ),
       ),
@@ -133,6 +198,8 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+
+    _loginBloc = sl<AuthenticationBloc>();
   }
 
   @override

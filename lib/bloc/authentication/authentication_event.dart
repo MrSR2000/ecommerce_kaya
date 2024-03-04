@@ -8,3 +8,12 @@ class SignUpEvent extends AuthenticationEvent {
 
   SignUpEvent({required this.signUpRequestModel});
 }
+
+class LoginEvent extends AuthenticationEvent {
+  final LoginRequestModel loginRequestModel;
+
+  LoginEvent({required this.loginRequestModel});
+
+}
+
+

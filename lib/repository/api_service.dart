@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
+import '../models/authentication_model/login_model.dart';
 import '../models/authentication_model/signup_model.dart';
 import '../models/category_model/category_model.dart';
 import '../models/image_model/slider_model.dart';
@@ -13,20 +15,23 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio) = _ApiService;
 
+  //authentication
+  @POST('auth/register')
+  Future<dynamic> signup(@Body() SignUpRequestModel signupModel);
+
+  @POST('auth/login')
+  Future<dynamic> login(@Body() LoginRequestModel loginRequestModel);
+
+  //slider
   @GET('slider/for-public')
   Future<SliderModel> getSlider();
 
+  //products
   @GET('product/latest')
   Future<ProductOuterModel> getLatestProducts(@Query("page") String page);
 
   @GET('product/for-public/{slug}')
   Future<ProductDetailModel> getProductDetail(@Path() String slug);
-
-  @GET('category/top-level')
-  Future<ProductCategoryOuterModel> getCategories();
-
-  @GET('category/child-of/{slug}')
-  Future<ProductCategoryOuterModel> getChildCategories(@Path() String slug);
 
   @GET('product/search')
   Future<ProductOuterModel> getSearchProduct(
@@ -35,6 +40,10 @@ abstract class ApiService {
   @GET('product/by-category/{slug}')
   Future<ProductOuterModel> getProductsByCategory(@Path() String slug);
 
-  @POST('auth/register')
-  Future<dynamic> signup(@Body() SignUpRequestModel signupModel);
+  //category
+  @GET('category/top-level')
+  Future<ProductCategoryOuterModel> getCategories();
+
+  @GET('category/child-of/{slug}')
+  Future<ProductCategoryOuterModel> getChildCategories(@Path() String slug);
 }

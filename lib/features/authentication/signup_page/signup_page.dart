@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaya/config/theme/app_themes.dart';
@@ -121,6 +119,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 16.0,
+                      );
+                    }
+
+                    if (state is SignUpErrorState) {
+                      Fluttertoast.showToast(
+                        msg: state.error,
+                        gravity: ToastGravity.CENTER,
                       );
                     }
                   },
