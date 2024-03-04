@@ -7,6 +7,7 @@ import 'package:retrofit/retrofit.dart';
 import '../models/authentication_model/login_model.dart';
 import '../models/authentication_model/signup_model.dart';
 import '../models/cart_model/add_to_cart_response_model.dart';
+import '../models/cart_model/my_cart_model.dart';
 import '../models/category_model/category_model.dart';
 import '../models/image_model/slider_model.dart';
 import '../models/product_detail_model/product_detail_model.dart';
@@ -64,4 +65,9 @@ abstract class ApiService {
   Future<CartOuterResponseModel> addToCart(
       @Header("Authorization") String accessToken,
       @Body() AddToCartRequestModel addToCartRequest);
+
+  @GET('order/user/my-cart')
+  Future<CartResponseModel> getMyCart(
+    @Header("Authorization") String accessToken,
+  );
 }

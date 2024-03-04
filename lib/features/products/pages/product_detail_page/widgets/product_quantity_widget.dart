@@ -31,7 +31,7 @@ class _ProductQuantityWidgetState extends State<ProductQuantityWidget> {
       children: [
         textWidget(
           text: "Select Quantity",
-          textSize: TextSize.medium,
+          textSize: TextSize.small,
           fontWeight: FontWeight.w500,
         ),
         gap10,
@@ -134,15 +134,14 @@ class _ProductQuantityWidgetState extends State<ProductQuantityWidget> {
   void _decrementQty() {
     int qty = int.parse(_qtyController.text);
 
-    if (qty > 0) {
+    if (qty > 1) {
       setState(() {
         _qtyController.text = (int.parse(_qtyController.text) - 1).toString();
       });
       widget.onValueChanged(int.parse(_qtyController.text));
     } else {
-      log("shpw toast");
       Fluttertoast.showToast(
-        msg: "Quantity must be greater than 0",
+        msg: "Quantity must be greater than 1",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,

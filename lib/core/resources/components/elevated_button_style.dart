@@ -9,3 +9,9 @@ ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
     borderRadius: BorderRadius.circular(8),
   ),
 );
+ButtonStyle elevatedButtonWithRedBGStyle = ElevatedButton.styleFrom(
+  backgroundColor: Colors.red,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(8),
+  ),
+);

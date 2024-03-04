@@ -8,3 +8,5 @@ class AddToCartEvent extends CartEvent {
 
   AddToCartEvent({required this.addToCartRequestModel});
 }
+
+class GetMyCart extends CartEvent {}
