@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kaya/bloc/theme/theme_bloc.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/constants/constants.dart';
 import 'package:kaya/features/main_page.dart';
@@ -29,23 +31,32 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'KAYA',
-      theme: theme(),
-      home: LoaderOverlay(
-        useDefaultLoading: false,
-        overlayWidgetBuilder: (_) {
-          //ignored progress for the moment
-          return const Center(
-            child: CupertinoActivityIndicator(
-              color: Colors.black,
-              radius: 30,
+    return BlocProvider(
+      create: (context) => ThemeBloc(),
+      child: BlocBuilder<ThemeBloc, ThemeMode>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'KAYA',
+            theme: lightTheme(),
+            darkTheme: darkTheme(),
+            themeMode: state,
+            home: LoaderOverlay(
+              useDefaultLoading: false,
+              overlayWidgetBuilder: (_) {
+                //ignored progress for the moment
+                return const Center(
+                  child: CupertinoActivityIndicator(
+                    color: Colors.black,
+                    radius: 30,
+                  ),
+                );
+              },
+              child: const MainPage(),
+              // child: const LoginPage(),
             ),
           );
         },
-        child: const MainPage(),
-        // child: const LoginPage(),
       ),
     );
   }

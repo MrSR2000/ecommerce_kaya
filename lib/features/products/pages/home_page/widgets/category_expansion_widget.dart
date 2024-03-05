@@ -10,7 +10,6 @@ import 'package:kaya/core/resources/components/gaps.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/product_of_category.dart';
 
-import '../../../../../bloc/product/bloc/product_bloc.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/category_model/category_model.dart';
 

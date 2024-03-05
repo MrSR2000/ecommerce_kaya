@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:kaya/models/product_detail_model/product_detail_model.dart';
 import 'package:kaya/models/product_model/product_model.dart';
 import 'package:kaya/repository/api_service.dart';
-import 'package:meta/meta.dart';
 
 import '../../../injection_container.dart';
 

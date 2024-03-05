@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,16 +82,18 @@ Widget body() {
           fontWeight: FontWeight.bold,
         ),
       ),
-      BlocProvider(
-        create: (context) => homepageBloc..add(LatestProductFetchEvent()),
-        child: Expanded(
-          child: ProductsGrid(
-            reCallApi: () {
-              homepageBloc.add(
-                LatestProductFetchEvent(),
-              );
-            },
-            // productEvent: LatestProductFetchEvent(),
+      Expanded(
+        child: BlocProvider(
+          create: (context) => homepageBloc..add(LatestProductFetchEvent()),
+          child: Expanded(
+            child: ProductsGrid(
+              reCallApi: () {
+                homepageBloc.add(
+                  LatestProductFetchEvent(),
+                );
+              },
+              // productEvent: LatestProductFetchEvent(),
+            ),
           ),
         ),
       ),

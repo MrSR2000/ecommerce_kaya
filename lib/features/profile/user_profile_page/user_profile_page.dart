@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaya/bloc/authentication/authentication_bloc.dart';
+import 'package:kaya/bloc/theme/theme_bloc.dart';
 import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
@@ -98,6 +99,25 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 optionsWidget(title: "My Review", ontap: () {}),
                 gap5,
                 optionsWidget(title: "Wishlist", ontap: () {}),
+                gap10,
+                Row(
+                  children: [
+                    textWidget(
+                      text: "Dark Mode",
+                      textSize: TextSize.small,
+                    ),
+                    const Spacer(),
+                    Switch(
+                      value: context.read<ThemeBloc>().state == ThemeMode.dark,
+                      onChanged: (value) {
+                        setState(() {});
+                        context
+                            .read<ThemeBloc>()
+                            .add(ThemeChanged(isDark: value));
+                      },
+                    ),
+                  ],
+                ),
                 gap20,
                 gap20,
                 if (isLoggedIn)
