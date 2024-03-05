@@ -11,10 +11,12 @@ import 'package:kaya/core/resources/components/text_widget.dart';
 class ProductQuantityWidget extends StatefulWidget {
   final Function(int) onValueChanged;
   final int maxQty;
+  final int initialQty;
   const ProductQuantityWidget({
     super.key,
     required this.onValueChanged,
     required this.maxQty,
+    this.initialQty = 1,
   });
 
   @override
@@ -105,7 +107,7 @@ class _ProductQuantityWidgetState extends State<ProductQuantityWidget> {
   void initState() {
     super.initState();
 
-    _qtyController = TextEditingController(text: "1");
+    _qtyController = TextEditingController(text: widget.initialQty.toString());
 
     log("max order = ${widget.maxQty}");
   }

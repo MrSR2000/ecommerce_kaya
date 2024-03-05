@@ -64,7 +64,9 @@ class ProductDetailpage extends StatelessWidget {
           if (state is ProductDetailSuccessfulState) {
             ProductDetailModel productDetail = state.productDetail;
 
-            log("product detail id = ${productDetail.data!.id} \n variation = ${productDetail.data!.variantType!} \n variationID = ${productDetail.data!.colorVariants![selectedVariationIndex].id}");
+            log("product id = ${productDetail.data!.id!}");
+
+            // log("product detail id = ${productDetail.data!.id} \n variation = ${productDetail.data!.variantType!} \n variationID = ${productDetail.data!.colorVariants![selectedVariationIndex].id}");
 
             return Scaffold(
               appBar: _appBar(productDetail: productDetail),
@@ -77,13 +79,18 @@ class ProductDetailpage extends StatelessWidget {
                 child: ElevatedButton(
                   style: elevatedButtonStyle,
                   onPressed: () {
+                    log("variation type = ${productDetail.data!.variantType!}");
+
                     AddToCartRequestModel addToCartRequestModel =
                         AddToCartRequestModel(
                       product: productDetail.data!.id!,
                       quantity: productQty,
                       variantType: productDetail.data!.variantType!,
-                      variantId: productDetail
-                          .data!.colorVariants![selectedVariationIndex].id!,
+                      variantId: productDetail.data!.variantType! == "Color"
+                          ? productDetail
+                              .data!.colorVariants![selectedVariationIndex].id!
+                          : productDetail
+                              .data!.sizeVariants![selectedVariationIndex].id!,
                       refCode: "",
                     );
 

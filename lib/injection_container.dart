@@ -29,3 +29,6 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
   sl.registerSingleton<GetStorage>(GetStorage());
 }
+
+//initialize bloc
+CartBloc cartBloc = CartBloc();

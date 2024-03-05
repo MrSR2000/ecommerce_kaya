@@ -1,87 +1,86 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kaya/models/cart_model/add_to_cart_response_model.dart';
 
-part 'my_cart_model.g.dart';
+part 'cart_response_model.g.dart';
 
 @JsonSerializable()
-class CartResponseModel {
+class CartOuterResponseModel {
   String? title;
   String? message;
   CartDataModel? data;
 
-  CartResponseModel({this.title, this.message, this.data});
+  CartOuterResponseModel({this.title, this.message, this.data});
 
-  factory CartResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$CartResponseModelFromJson(json);
+  factory CartOuterResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$CartOuterResponseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CartResponseModelToJson(this);
+  Map<String, dynamic> toJson() => _$CartOuterResponseModelToJson(this);
 }
 
-// @JsonSerializable()
-// class CartDataModel {
-//   BillingAddressModel? billingAddress;
-//   ShippingAddressModel? shippingAddress;
-//   String? id;
-//   String? user;
-//   String? orderId;
-//   String? orderStatus;
-//   String? paymentMethod;
-//   bool? paymentVerifiedByAdmin;
-//   String? paymentStatus;
-//   int? subTotal;
-//   int? totalAmount;
-//   int? amountWithoutDeliveryCharge;
-//   String? voucherCode;
-//   bool? useAvailableRewardCoin;
-//   int? rewardCoin;
-//   int? voucherAmount;
-//   int? voucherPercentage;
-//   int? packageWeight;
-//   String? deliveryAddress;
-//   String? deliveryPackageType;
-//   int? deliveryPackageCost;
-//   int? deliveryCharge;
-//   bool? isDeleted;
-//   List<CartItemModel>? items;
-//   DateTime? createdAt;
-//   DateTime? updatedAt;
-//   int? v;
+@JsonSerializable()
+class CartDataModel {
+  BillingAddressModel? billingAddress;
+  ShippingAddressModel? shippingAddress;
+  String? id;
+  String? user;
+  String? orderId;
+  String? orderStatus;
+  String? paymentMethod;
+  bool? paymentVerifiedByAdmin;
+  String? paymentStatus;
+  int? subTotal;
+  int? totalAmount;
+  int? amountWithoutDeliveryCharge;
+  String? voucherCode;
+  bool? useAvailableRewardCoin;
+  int? rewardCoin;
+  int? voucherAmount;
+  int? voucherPercentage;
+  int? packageWeight;
+  String? deliveryAddress;
+  String? deliveryPackageType;
+  int? deliveryPackageCost;
+  int? deliveryCharge;
+  bool? isDeleted;
+  List<CartItemModel>? items;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
 
-//   CartDataModel({
-//     this.billingAddress,
-//     this.shippingAddress,
-//     this.id,
-//     this.user,
-//     this.orderId,
-//     this.orderStatus,
-//     this.paymentMethod,
-//     this.paymentVerifiedByAdmin,
-//     this.paymentStatus,
-//     this.subTotal,
-//     this.totalAmount,
-//     this.amountWithoutDeliveryCharge,
-//     this.voucherCode,
-//     this.useAvailableRewardCoin,
-//     this.rewardCoin,
-//     this.voucherAmount,
-//     this.voucherPercentage,
-//     this.packageWeight,
-//     this.deliveryAddress,
-//     this.deliveryPackageType,
-//     this.deliveryPackageCost,
-//     this.deliveryCharge,
-//     this.isDeleted,
-//     this.items,
-//     this.createdAt,
-//     this.updatedAt,
-//     this.v,
-//   });
+  CartDataModel({
+    this.billingAddress,
+    this.shippingAddress,
+    this.id,
+    this.user,
+    this.orderId,
+    this.orderStatus,
+    this.paymentMethod,
+    this.paymentVerifiedByAdmin,
+    this.paymentStatus,
+    this.subTotal,
+    this.totalAmount,
+    this.amountWithoutDeliveryCharge,
+    this.voucherCode,
+    this.useAvailableRewardCoin,
+    this.rewardCoin,
+    this.voucherAmount,
+    this.voucherPercentage,
+    this.packageWeight,
+    this.deliveryAddress,
+    this.deliveryPackageType,
+    this.deliveryPackageCost,
+    this.deliveryCharge,
+    this.isDeleted,
+    this.items,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+  });
 
-//   factory CartDataModel.fromJson(Map<String, dynamic> json) =>
-//       _$CartDataModelFromJson(json);
+  factory CartDataModel.fromJson(Map<String, dynamic> json) =>
+      _$CartDataModelFromJson(json);
 
-//   Map<String, dynamic> toJson() => _$CartDataModelToJson(this);
-// }
+  Map<String, dynamic> toJson() => _$CartDataModelToJson(this);
+}
 
 @JsonSerializable()
 class BillingAddressModel {
@@ -97,6 +96,7 @@ class BillingAddressModel {
       this.contactNumber,
       this.contactNumberAlt,
       this.location});
+
   factory BillingAddressModel.fromJson(Map<String, dynamic> json) =>
       _$BillingAddressModelFromJson(json);
 
@@ -112,6 +112,7 @@ class ShippingAddressModel {
 
   ShippingAddressModel(
       {this.fullName, this.email, this.contactNumber, this.location});
+
   factory ShippingAddressModel.fromJson(Map<String, dynamic> json) =>
       _$ShippingAddressModelFromJson(json);
 
@@ -171,7 +172,6 @@ class ProductModel {
   List<String>? images;
 
   ProductModel({this.id, this.slug, this.brand, this.title, this.images});
-
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
       _$ProductModelFromJson(json);
 
@@ -185,7 +185,6 @@ class ColorModel {
   String? colorValue;
 
   ColorModel({this.id, this.name, this.colorValue});
-
   factory ColorModel.fromJson(Map<String, dynamic> json) =>
       _$ColorModelFromJson(json);
 

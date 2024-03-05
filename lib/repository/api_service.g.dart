@@ -360,14 +360,14 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<CartResponseModel> getMyCart(String accessToken) async {
+  Future<CartOuterResponseModel> getMyCart(String accessToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': accessToken};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<CartResponseModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CartOuterResponseModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -383,7 +383,38 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CartResponseModel.fromJson(_result.data!);
+    final value = CartOuterResponseModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<CartOuterResponseModel> removeItemFromCart(
+    String accessToken,
+    String itemId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': accessToken};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CartOuterResponseModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'order/user/item/${itemId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CartOuterResponseModel.fromJson(_result.data!);
     return value;
   }
 

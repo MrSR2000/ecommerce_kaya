@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
+import 'package:kaya/core/resources/components/button_circular_progress_indicator.dart';
 import 'package:kaya/core/resources/components/center_circular_loading_widget.dart';
 import 'package:kaya/core/resources/components/contact_developer_widget.dart';
 import 'package:kaya/core/resources/components/elevated_button_style.dart';
@@ -12,7 +12,7 @@ import 'package:kaya/core/resources/components/gaps.dart';
 import 'package:kaya/core/resources/components/network_image_widget.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
 import 'package:kaya/features/products/pages/product_detail_page/widgets/product_quantity_widget.dart';
-import 'package:kaya/models/cart_model/add_to_cart_response_model.dart';
+import 'package:kaya/models/cart_model/cart_response_model.dart';
 
 import '../../../bloc/cart/cart_bloc.dart';
 import '../../../injection_container.dart';
@@ -28,7 +28,7 @@ class _CartPageState extends State<CartPage> {
   int productQty = 0;
   int totalCost = 0;
 
-  late CartBloc _cartBloc;
+  // late CartBloc _cartBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +41,10 @@ class _CartPageState extends State<CartPage> {
   RefreshIndicator _body() {
     return RefreshIndicator(
       onRefresh: () async {
-        _cartBloc.add(GetMyCart());
+        cartBloc.add(GetMyCartEvent());
       },
       child: BlocProvider(
-        create: (context) => _cartBloc..add(GetMyCart()),
+        create: (context) => cartBloc..add(GetMyCartEvent()),
         child: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
             if (state is MyCartLoadingState) {
@@ -71,7 +71,12 @@ class _CartPageState extends State<CartPage> {
                         itemBuilder: (context, index) {
                           CartItemModel cartItem = cartItems[index];
 
-                          return _listViewBody(cartItem);
+                          CartBloc removeItemBloc = sl<CartBloc>();
+
+                          return _listViewBody(
+                            cartItem: cartItem,
+                            removeItemBloc: removeItemBloc,
+                          );
                         },
                       ),
                     ),
@@ -122,7 +127,8 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _listViewBody(CartItemModel cartItem) {
+  Widget _listViewBody(
+      {required CartItemModel cartItem, required CartBloc removeItemBloc}) {
     return bodyPadding(
       child: Column(
         children: [
@@ -148,7 +154,7 @@ class _CartPageState extends State<CartPage> {
                   gap5,
                   textWidget(
                     text:
-                        "${cartItem.variantType} : ${cartItem.selectedColor!.name!}",
+                        "${cartItem.variantType} : ${cartItem.variantType == "Color" ? cartItem.selectedColor!.name! : cartItem.selectedVariantName!}",
                     textSize: TextSize.small,
                   ),
                   textWidget(
@@ -158,6 +164,7 @@ class _CartPageState extends State<CartPage> {
                   ProductQuantityWidget(
                     onValueChanged: handleQtyVariationChange,
                     maxQty: cartItem.maxOrder!,
+                    initialQty: cartItem.quantity!,
                   ),
                   gap10,
                 ],
@@ -169,11 +176,38 @@ class _CartPageState extends State<CartPage> {
               Expanded(
                 child: ElevatedButton(
                   style: elevatedButtonWithRedBGStyle,
-                  onPressed: () {},
-                  child: textWidget(
-                    text: "Remove",
-                    textSize: TextSize.small,
-                    color: Colors.white,
+                  onPressed: () {
+                    log("remove tapped");
+
+                    removeItemBloc.add(RemoveItemFromCart(
+                      itemId: cartItem.id!,
+                    ));
+                  },
+                  child: BlocConsumer<CartBloc, CartState>(
+                    bloc: removeItemBloc,
+                    listener: (context, state) {
+                      if (state is RemoveItemFromCartSuccessState) {
+                        // _cartBloc.add(GetMyCartEvent());
+                      }
+
+                      if (state is RemoveItemFromCartErrorState) {
+                        Fluttertoast.showToast(
+                          msg: state.error,
+                          gravity: ToastGravity.CENTER,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is RemoveItemFromCartLoadingState) {
+                        return buttonCircularProgressIndicator();
+                      }
+
+                      return textWidget(
+                        text: "Remove",
+                        textSize: TextSize.small,
+                        color: Colors.white,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -205,8 +239,6 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-
-    _cartBloc = sl<CartBloc>();
   }
 
   void handleQtyVariationChange(int newQty) {
@@ -216,10 +248,9 @@ class _CartPageState extends State<CartPage> {
   }
 
   calculateTotalCost({required List<CartItemModel> cartItems}) {
+    totalCost = 0;
     for (var item in cartItems) {
-      totalCost += item.price!;
+      totalCost += (item.price! * item.quantity!);
     }
-
-    log("total price = $totalCost");
   }
 }

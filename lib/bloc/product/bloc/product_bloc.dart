@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:kaya/core/resources/functions/dio_error.dart';
 import 'package:kaya/models/product_detail_model/product_detail_model.dart';
 import 'package:kaya/models/product_model/product_model.dart';
 import 'package:kaya/repository/api_service.dart';
@@ -45,10 +46,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
       page++;
 
+      log("page = $page");
+
       final products = (state as ProductLoadingState).oldProducts;
       products.addAll(productOuter.data!.docs!);
 
       log("this is final page = ${!productOuter.data!.pagination!.nextPage!}");
+
+      log("total product = ${products.length}");
 
       emit(ProductSuccessfulState(
         products: products,
@@ -75,7 +80,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
       emit(ProductDetailSuccessfulState(productDetail: productDetail));
     } catch (e) {
-      log("product detail error = $e");
+      var error = dioErrorResponse(e);
+
+      log("product detail error = $error");
 
       emit(ProductDetailErrorState(error: e.toString()));
     }

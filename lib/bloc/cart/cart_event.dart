@@ -9,4 +9,18 @@ class AddToCartEvent extends CartEvent {
   AddToCartEvent({required this.addToCartRequestModel});
 }
 
-class GetMyCart extends CartEvent {}
+class GetMyCartEvent extends CartEvent {}
+
+class UpdatedCartEvent extends CartEvent {
+  final CartOuterResponseModel myCart;
+
+  UpdatedCartEvent({required this.myCart});
+}
+
+class RemoveItemFromCart extends CartEvent {
+  final String itemId;
+
+  RemoveItemFromCart({
+    required this.itemId,
+  });
+}

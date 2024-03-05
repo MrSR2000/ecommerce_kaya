@@ -34,3 +34,16 @@ class MyCartErrorState extends CartState {
 
   MyCartErrorState({required this.error});
 }
+
+//remove item from cart
+class RemoveItemFromCartLoadingState extends CartState {}
+
+class RemoveItemFromCartSuccessState extends CartState {
+  RemoveItemFromCartSuccessState();
+}
+
+class RemoveItemFromCartErrorState extends CartState {
+  final String error;
+
+  RemoveItemFromCartErrorState({required this.error});
+}

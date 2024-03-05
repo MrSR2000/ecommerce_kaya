@@ -60,23 +60,26 @@ class _ProductsGridState extends State<ProductsGrid> {
           if (state is ProductLoadingState) {
             products = state.oldProducts;
             isLoading = true;
-          } else if (state is ProductErrorState) {
+          }
+          if (state is ProductErrorState) {
             return textWidget(
               text: state.error,
               textSize: TextSize.medium,
             );
-          } else if (state is ProductSuccessfulState) {
+          }
+          if (state is ProductSuccessfulState) {
             // var successState = state as ProductSuccessfulState;
             // ProductOuterModel productOuter = successState.product;
             // List<ProductModel> products = productOuter.data!.docs!;
             // List<ProductModel> products = state.products;
 
+            log("hello there");
+
             products = state.products;
             isFinal = state.isFinalPage;
+
+            log("in UI part this is final page = $isFinal");
           }
-
-          log("in UI part this is final page = $isFinal");
-
           return products.isEmpty
               ? Center(
                   child: textWidget(
@@ -92,7 +95,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    childAspectRatio: 2 / 3.6,
+                    childAspectRatio: 2 / 2.8,
                   ),
                   itemCount: products.length +
                       (isFinal
@@ -152,44 +155,41 @@ class _ProductsGridState extends State<ProductsGrid> {
                                 fontWeight: FontWeight.bold,
                               ),
                               gap10,
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: elevatedButtonStyle,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // const Icon(
-                                    //   Icons.shopping_cart_outlined,
-                                    //   size: 16,
-                                    //   color: Colors.white,
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 16,
-                                    //   child: VerticalDivider(
-                                    //     color: Colors.white,
-                                    //   ),
-                                    // ),
-                                    textWidget(
-                                      text: "Add To Cart",
-                                      textSize: TextSize.small,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                              )
+                              // ElevatedButton(
+                              //   onPressed: () {},
+                              //   style: elevatedButtonStyle,
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: [
+                              //       // const Icon(
+                              //       //   Icons.shopping_cart_outlined,
+                              //       //   size: 16,
+                              //       //   color: Colors.white,
+                              //       // ),
+                              //       // const SizedBox(
+                              //       //   height: 16,
+                              //       //   child: VerticalDivider(
+                              //       //     color: Colors.white,
+                              //       //   ),
+                              //       // ),
+                              //       textWidget(
+                              //         text: "Add To Cart",
+                              //         textSize: TextSize.small,
+                              //         color: Colors.white,
+                              //       ),
+                              //     ],
+                              //   ),
+                              // )
                             ],
                           ),
                         ),
                       );
                     } else {
-                      log("loading");
                       Timer(
-                        const Duration(milliseconds: 30),
+                        const Duration(milliseconds: 300),
                         () {
                           scrollController.jumpTo(
-                            scrollController.position.maxScrollExtent -
-                                getDeviceSize(context: context).deviceHeight /
-                                    3.4,
+                            scrollController.position.maxScrollExtent,
                           );
                         },
                       );
@@ -218,10 +218,10 @@ class _ProductsGridState extends State<ProductsGrid> {
     scrollController.addListener(() {
       // if (scrollController.position.atEdge) {
       //   if (scrollController.position.pixels != 0) {
-      // if (!isFinal) {
-      //   log("called from grid widget");
-      //   widget.reCallApi();
-      // }
+      //     if (!isFinal) {
+      //       log("called from grid widget");
+      //       widget.reCallApi();
+      //     }
       //   }
       // }
 

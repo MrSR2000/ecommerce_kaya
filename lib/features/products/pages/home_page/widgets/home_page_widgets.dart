@@ -64,28 +64,31 @@ Drawer drawer(BuildContext context) {
 Widget body() {
   ProductBloc homepageBloc = sl<ProductBloc>();
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const SearchBarWidget(),
-      sliderWidget(),
-      gap10,
-      Padding(
-        padding: const EdgeInsets.only(
-          left: 15,
-          right: 15,
-          top: 10,
+  return RefreshIndicator(
+    onRefresh: () async {
+      homepageBloc.add(LatestProductFetchEvent());
+    },
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SearchBarWidget(),
+        sliderWidget(),
+        gap10,
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 15,
+            right: 15,
+            top: 10,
+          ),
+          child: textWidget(
+            text: "Latest Products",
+            textSize: TextSize.large,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        child: textWidget(
-          text: "Latest Products",
-          textSize: TextSize.large,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      Expanded(
-        child: BlocProvider(
-          create: (context) => homepageBloc..add(LatestProductFetchEvent()),
-          child: Expanded(
+        Expanded(
+          child: BlocProvider(
+            create: (context) => homepageBloc..add(LatestProductFetchEvent()),
             child: ProductsGrid(
               reCallApi: () {
                 homepageBloc.add(
@@ -96,8 +99,8 @@ Widget body() {
             ),
           ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
