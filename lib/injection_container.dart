@@ -7,6 +7,7 @@ import 'package:kaya/bloc/cart/cart_bloc.dart';
 import 'package:kaya/bloc/product/bloc/product_bloc.dart';
 import 'package:kaya/bloc/product_categories/product_categories_bloc.dart';
 import 'package:kaya/bloc/slider/slider_bloc.dart';
+import 'package:kaya/bloc/wishlist/wishlist_bloc.dart';
 import 'package:kaya/repository/api_service.dart';
 
 final sl = GetIt.instance;
@@ -24,6 +25,7 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<ProductCategoriesBloc>(() => ProductCategoriesBloc());
   sl.registerFactory<AuthenticationBloc>(() => AuthenticationBloc());
   sl.registerFactory<CartBloc>(() => CartBloc());
+  sl.registerFactory<WishlistBloc>(() => WishlistBloc());
 
   //secure storage
   sl.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());

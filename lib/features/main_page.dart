@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/features/products/pages/home_page/home_page.dart';
 import 'package:kaya/features/profile/user_profile_page/user_profile_page.dart';
-import 'package:kaya/features/purchasing_cart/cart_page/cart_page.dart';
+import 'package:kaya/features/cart_wishlist/cart_page/cart_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class MainPage extends StatefulWidget {

@@ -78,8 +78,12 @@ abstract class ApiService {
 
   //wish list
   @POST('wishlist/add-remove')
-  Future<Map<String, dynamic>> addOrRemoveToWishlist(
+  Future<dynamic> addOrRemoveToWishlist(
     @Header("Authorization") String accessToken,
     @Body() Map<String, dynamic> product,
   );
+
+
+  // @GET('wishlist')
+  // Future<dynamic> 
 }

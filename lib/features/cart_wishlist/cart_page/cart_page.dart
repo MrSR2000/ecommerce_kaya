@@ -26,7 +26,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   int productQty = 0;
-  int totalCost = 0;
+  // int totalCost = 0;
 
   // late CartBloc _cartBloc;
 
@@ -54,7 +54,7 @@ class _CartPageState extends State<CartPage> {
             if (state is MyCartSuccessState) {
               List<CartItemModel> cartItems = state.cartData.items!;
 
-              calculateTotalCost(cartItems: cartItems);
+              // calculateTotalCost(cartItems: cartItems);
 
               return bodyPadding(
                 child: Column(
@@ -82,7 +82,8 @@ class _CartPageState extends State<CartPage> {
                     ),
                     // gap15,
                     // const Spacer(),
-                    _totalPriceAndCheckout(),
+                    _totalPriceAndCheckout(
+                        totalAmount: state.cartData.totalAmount.toString()),
                     gap10,
                   ],
                 ),
@@ -103,11 +104,11 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Row _totalPriceAndCheckout() {
+  Row _totalPriceAndCheckout({required String totalAmount}) {
     return Row(
       children: [
         textWidget(
-          text: "Rs. $totalCost",
+          text: "Rs. $totalAmount",
           textSize: TextSize.large,
           fontWeight: FontWeight.bold,
         ),
@@ -247,10 +248,10 @@ class _CartPageState extends State<CartPage> {
     log("new qty from parent = $productQty");
   }
 
-  calculateTotalCost({required List<CartItemModel> cartItems}) {
-    totalCost = 0;
-    for (var item in cartItems) {
-      totalCost += (item.price! * item.quantity!);
-    }
-  }
+  // calculateTotalCost({required List<CartItemModel> cartItems}) {
+  //   totalCost = 0;
+  //   for (var item in cartItems) {
+  //     totalCost += (item.price! * item.quantity!);
+  //   }
+  // }
 }

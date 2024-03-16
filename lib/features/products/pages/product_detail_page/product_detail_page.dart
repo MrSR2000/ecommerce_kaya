@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaya/bloc/cart/cart_bloc.dart';
+import 'package:kaya/bloc/wishlist/wishlist_bloc.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
 import 'package:kaya/core/resources/components/center_circular_loading_widget.dart';
@@ -34,10 +36,10 @@ class ProductDetailpage extends StatelessWidget {
   int selectedVariationIndex = 0;
   int productQty = 1;
 
-  late CartBloc _cartBloc = sl<CartBloc>();
+  final CartBloc _cartBloc = sl<CartBloc>();
+  final WishlistBloc _wishListBloc = sl<WishlistBloc>();
 
   void handleVariationChange(int newValue) {
-    // Do something with the changed value in the parent widget
     selectedVariationIndex = newValue;
     log('Parent received new value: $selectedVariationIndex');
   }
@@ -191,6 +193,39 @@ class ProductDetailpage extends StatelessWidget {
                       textSize: TextSize.medium,
                       color: const Color.fromARGB(255, 224, 224, 224),
                       textDecoration: TextDecoration.lineThrough,
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        _wishListBloc.add(
+                          AddRemoveToWishListEvent(
+                            productId: productDetail.data!.id!,
+                          ),
+                        );
+                      },
+                      icon: BlocConsumer<WishlistBloc, WishlistState>(
+                        bloc: _wishListBloc,
+                        listener: (context, state) {
+                          if (state is AddRemovetoWishListSuccessState) {
+                            Fluttertoast.showToast(
+                              msg: state.response['message'],
+                              gravity: ToastGravity.CENTER,
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is AddRemovetoWishListSuccessState) {
+                            return state.response['message'] ==
+                                    "Added To WishList"
+                                ? const Icon(
+                                    CupertinoIcons.heart_fill,
+                                    color: Colors.red,
+                                  )
+                                : const Icon(CupertinoIcons.heart);
+                          }
+                          return const Icon(CupertinoIcons.heart);
+                        },
+                      ),
                     ),
                   ],
                 ),

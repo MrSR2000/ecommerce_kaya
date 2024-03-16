@@ -8,6 +8,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       
       appBar: appBar(context: context),
       body: body(),
       drawer: drawer(context),

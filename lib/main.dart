@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             home: LoaderOverlay(
               useDefaultLoading: false,
               overlayWidgetBuilder: (_) {
-                //ignored progress for the moment
+                //ignored progress for the moment1
                 return const Center(
                   child: CupertinoActivityIndicator(
                     color: Colors.black,
