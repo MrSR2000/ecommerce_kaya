@@ -26,7 +26,7 @@ Map<String, dynamic> _$ProductCategoryOuterModelToJson(
 
 CategoryDataModel _$CategoryDataModelFromJson(Map<String, dynamic> json) =>
     CategoryDataModel(
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       slug: json['slug'] as String,
       title: json['title'] as String,
       level: json['level'] as int,

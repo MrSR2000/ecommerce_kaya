@@ -36,7 +36,7 @@ Map<String, dynamic> _$LoginResponseOuterModelToJson(
 
 LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
     LoginResponseModel(
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       slug: json['slug'] as String?,
       userType: (json['userType'] as List<dynamic>?)
           ?.map((e) => e as String)

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kaya/core/resources/components/body_padding.dart';
 
 class WishlistPage extends StatelessWidget {
   const WishlistPage({super.key});

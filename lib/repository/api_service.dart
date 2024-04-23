@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:kaya/models/cart_model/add_to_cart_request_model.dart';
+import 'package:kaya/models/product_by_filter_model/product_by_filter_model.dart';
 import 'package:kaya/models/user_model/user_detail_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
@@ -14,7 +15,7 @@ import '../models/product_model/product_model.dart';
 
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "https://thekayalab.softbenz.com/api/")
+@RestApi(baseUrl: "https://api.thekayalab.com/api/")
 abstract class ApiService {
   factory ApiService(Dio dio) = _ApiService;
 
@@ -59,6 +60,18 @@ abstract class ApiService {
   @GET('category/child-of/{slug}')
   Future<ProductCategoryOuterModel> getChildCategories(@Path() String slug);
 
+  @GET('product/by-category/{slug}')
+  Future<ProductOuterModel> getProductByCategory({
+    @Path() required String slug,
+    @Query('brands') String? brands,
+    @Query('min') String? min,
+    @Query('max') String? max,
+  });
+
+  @GET('product/by-category/filters/{slug}')
+  Future<CategoryFilterOuterModel> getProductByCategoryFilters(
+      @Path() String slug);
+
   //orders
   @POST('order/user/item')
   Future<CartOuterResponseModel> addToCart(
@@ -83,7 +96,6 @@ abstract class ApiService {
     @Body() Map<String, dynamic> product,
   );
 
-
   // @GET('wishlist')
-  // Future<dynamic> 
+  // Future<dynamic>
 }

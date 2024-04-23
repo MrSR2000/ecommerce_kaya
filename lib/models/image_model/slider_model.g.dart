@@ -22,7 +22,7 @@ Map<String, dynamic> _$SliderModelToJson(SliderModel instance) =>
     };
 
 SliderData _$SliderDataFromJson(Map<String, dynamic> json) => SliderData(
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       image: json['image'] as String?,
       link: json['link'] as String?,
       title: json['title'] as String?,

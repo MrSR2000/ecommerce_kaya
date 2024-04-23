@@ -7,7 +7,6 @@ import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/config/theme/app_themes.dart';
 import 'package:kaya/core/resources/components/body_padding.dart';
 import 'package:kaya/core/resources/components/center_circular_loading_widget.dart';
-import 'package:kaya/core/resources/components/elevated_button_style.dart';
 import 'package:kaya/core/resources/components/gaps.dart';
 import 'package:kaya/core/resources/components/network_image_widget.dart';
 import 'package:kaya/core/resources/components/rounded_border_container.dart';

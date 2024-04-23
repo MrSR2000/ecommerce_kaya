@@ -13,7 +13,7 @@ class _ApiService implements ApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://thekayalab.softbenz.com/api/';
+    baseUrl ??= 'https://api.thekayalab.com/api/';
   }
 
   final Dio _dio;
@@ -324,6 +324,71 @@ class _ApiService implements ApiService {
               baseUrl,
             ))));
     final value = ProductCategoryOuterModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ProductOuterModel> getProductByCategory({
+    required String slug,
+    String? brands,
+    String? min,
+    String? max,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'brands': brands,
+      r'min': min,
+      r'max': max,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ProductOuterModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'product/by-category/${slug}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ProductOuterModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<CategoryFilterOuterModel> getProductByCategoryFilters(
+      String slug) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CategoryFilterOuterModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'product/by-category/filters/${slug}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CategoryFilterOuterModel.fromJson(_result.data!);
     return value;
   }
 

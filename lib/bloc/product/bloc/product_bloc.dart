@@ -77,6 +77,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           await sl<ApiService>().getProductDetail(event.slug);
 
       log("product detail success =$productDetail");
+      log("detail = ${productDetail.data?.id}");
 
       emit(ProductDetailSuccessfulState(productDetail: productDetail));
     } catch (e) {

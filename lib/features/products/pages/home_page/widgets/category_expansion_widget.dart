@@ -8,6 +8,7 @@ import 'package:kaya/core/resources/components/center_circular_loading_widget.da
 import 'package:kaya/core/resources/components/contact_developer_widget.dart';
 import 'package:kaya/core/resources/components/gaps.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
+import 'package:kaya/features/products/pages/category/category_page.dart';
 import 'package:kaya/features/products/pages/home_page/widgets/product_of_category.dart';
 
 import '../../../../../injection_container.dart';
@@ -63,29 +64,40 @@ class _CategoryExpansionWidgetState extends State<CategoryExpansionWidget> {
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          category.isExpanded = !category.isExpanded;
-                          category.productCategoriesBloc.add(
-                            ProductChildCategoryFetchEvent(
-                                slug: category.category.slug),
-                          );
-                        });
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          textWidget(
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            pushPage(
+                              context: context,
+                              page: CategoryPage(
+                                title: category.category.title,
+                                slug: category.category.slug,
+                              ),
+                            );
+                          },
+                          child: textWidget(
                             text: category.category.title,
                             textSize: TextSize.medium,
                           ),
-                          const Spacer(),
-                          category.isExpanded
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              category.isExpanded = !category.isExpanded;
+                              category.productCategoriesBloc.add(
+                                ProductChildCategoryFetchEvent(
+                                    slug: category.category.slug),
+                              );
+                            });
+                          },
+                          child: category.isExpanded
                               ? const Icon(Icons.keyboard_arrow_up)
                               : const Icon(Icons.keyboard_arrow_down),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     if (category.isExpanded)
                       bodyPadding(

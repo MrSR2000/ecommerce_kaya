@@ -34,7 +34,7 @@ CartDataModel _$CartDataModelFromJson(Map<String, dynamic> json) =>
           ? null
           : ShippingAddressModel.fromJson(
               json['shippingAddress'] as Map<String, dynamic>),
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       user: json['user'] as String?,
       orderId: json['orderId'] as String?,
       orderStatus: json['orderStatus'] as String?,
@@ -158,7 +158,7 @@ CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
       subTotal: json['subTotal'] as int?,
       rewardPoint: json['rewardPoint'] as int?,
       reviewGiven: json['reviewGiven'] as bool?,
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
     );
 
 Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
@@ -182,7 +182,7 @@ Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
     };
 
 ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       slug: json['slug'] as String?,
       brand: json['brand'] as String?,
       title: json['title'] as String?,
@@ -200,7 +200,7 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
     };
 
 ColorModel _$ColorModelFromJson(Map<String, dynamic> json) => ColorModel(
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       name: json['name'] as String?,
       colorValue: json['colorValue'] as String?,
     );

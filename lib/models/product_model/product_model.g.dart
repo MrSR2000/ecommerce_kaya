@@ -25,7 +25,7 @@ Map<String, dynamic> _$PaginationModelToJson(PaginationModel instance) =>
     };
 
 BrandModel _$BrandModelFromJson(Map<String, dynamic> json) => BrandModel(
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       slug: json['slug'] as String?,
       name: json['name'] as String?,
     );
@@ -38,7 +38,7 @@ Map<String, dynamic> _$BrandModelToJson(BrandModel instance) =>
     };
 
 ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
-      id: json['_id'] as String?,
+      id: json['id'] as String?,
       slug: json['slug'] as String?,
       brand: json['brand'] == null
           ? null
