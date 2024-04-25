@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/core/resources/components/text_widget.dart';
+import 'package:kaya/features/products/pages/category/category_page.dart';
 import 'package:kaya/models/product_by_filter_model/product_by_filter_model.dart';
 
 class FilterCategoriesWidget extends StatefulWidget {
@@ -29,9 +31,18 @@ class FilterCategoriesWidgetState extends State<FilterCategoriesWidget> {
           itemBuilder: (context, index) {
             CategoryModel? category = widget.categories[index];
 
-            return textWidget(
-              text: category?.title ?? "",
-              textSize: TextSize.medium,
+            return InkWell(
+              onTap: () {
+                pushPage(
+                  context: context,
+                  page: CategoryPage(
+                      slug: category?.slug ?? "", title: category?.title ?? ""),
+                );
+              },
+              child: textWidget(
+                text: category?.title ?? "",
+                textSize: TextSize.small,
+              ),
             );
           },
         ),

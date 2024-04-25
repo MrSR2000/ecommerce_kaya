@@ -6,24 +6,6 @@ part of 'product_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PaginationModel _$PaginationModelFromJson(Map<String, dynamic> json) =>
-    PaginationModel(
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      limit: json['limit'] as int?,
-      perviousPage: json['perviousPage'] as bool?,
-      nextPage: json['nextPage'] as bool?,
-    );
-
-Map<String, dynamic> _$PaginationModelToJson(PaginationModel instance) =>
-    <String, dynamic>{
-      'total': instance.total,
-      'page': instance.page,
-      'limit': instance.limit,
-      'perviousPage': instance.perviousPage,
-      'nextPage': instance.nextPage,
-    };
-
 BrandModel _$BrandModelFromJson(Map<String, dynamic> json) => BrandModel(
       id: json['id'] as String?,
       slug: json['slug'] as String?,
@@ -73,21 +55,6 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'wished': instance.wished,
     };
 
-DataModel _$DataModelFromJson(Map<String, dynamic> json) => DataModel(
-      pagination: json['pagination'] == null
-          ? null
-          : PaginationModel.fromJson(
-              json['pagination'] as Map<String, dynamic>),
-      docs: (json['docs'] as List<dynamic>?)
-          ?.map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$DataModelToJson(DataModel instance) => <String, dynamic>{
-      'pagination': instance.pagination,
-      'docs': instance.docs,
-    };
-
 ProductOuterModel _$ProductOuterModelFromJson(Map<String, dynamic> json) =>
     ProductOuterModel(
       title: json['title'] as String?,
@@ -102,4 +69,41 @@ Map<String, dynamic> _$ProductOuterModelToJson(ProductOuterModel instance) =>
       'title': instance.title,
       'message': instance.message,
       'data': instance.data,
+    };
+
+_$PaginationModelImpl _$$PaginationModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PaginationModelImpl(
+      json['total'] as int?,
+      json['page'] as int?,
+      json['limit'] as int?,
+      json['perviousPage'] as bool?,
+      json['nextPage'] as bool?,
+    );
+
+Map<String, dynamic> _$$PaginationModelImplToJson(
+        _$PaginationModelImpl instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'page': instance.page,
+      'limit': instance.limit,
+      'perviousPage': instance.perviousPage,
+      'nextPage': instance.nextPage,
+    };
+
+_$DataModelImpl _$$DataModelImplFromJson(Map<String, dynamic> json) =>
+    _$DataModelImpl(
+      json['pagination'] == null
+          ? null
+          : PaginationModel.fromJson(
+              json['pagination'] as Map<String, dynamic>),
+      (json['docs'] as List<dynamic>?)
+          ?.map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$DataModelImplToJson(_$DataModelImpl instance) =>
+    <String, dynamic>{
+      'pagination': instance.pagination,
+      'docs': instance.docs,
     };

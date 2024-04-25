@@ -333,12 +333,14 @@ class _ApiService implements ApiService {
     String? brands,
     String? min,
     String? max,
+    int? page,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'brands': brands,
       r'min': min,
       r'max': max,
+      r'page': page,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

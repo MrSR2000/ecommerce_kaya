@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:kaya/core/resources/functions/authorization_format.dart';
 import 'package:kaya/core/resources/functions/print_long_string.dart';

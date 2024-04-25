@@ -1,27 +1,20 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product_model.g.dart';
+part 'product_model.freezed.dart';
 
-@JsonSerializable()
-class PaginationModel {
-  int? total;
-  int? page;
-  int? limit;
-  bool? perviousPage;
-  bool? nextPage;
-
-  PaginationModel({
-    this.total,
-    this.page,
-    this.limit,
-    this.perviousPage,
-    this.nextPage,
-  });
+@freezed
+class PaginationModel with _$PaginationModel {
+  const factory PaginationModel(
+    final int? total,
+    final int? page,
+    final int? limit,
+    final bool? perviousPage,
+    final bool? nextPage,
+  ) = _PaginationModel;
 
   factory PaginationModel.fromJson(Map<String, dynamic> json) =>
       _$PaginationModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PaginationModelToJson(this);
 }
 
 @JsonSerializable()
@@ -80,19 +73,15 @@ class ProductModel {
   Map<String, dynamic> toJson() => _$ProductModelToJson(this);
 }
 
-@JsonSerializable()
-class DataModel {
-  PaginationModel? pagination;
-  List<ProductModel>? docs;
+@freezed
+class DataModel with _$DataModel {
+  const factory DataModel(
+    final PaginationModel? pagination,
+    final List<ProductModel>? docs,
+  ) = _DataModel;
 
-  DataModel({
-    this.pagination,
-    this.docs,
-  });
   factory DataModel.fromJson(Map<String, dynamic> json) =>
       _$DataModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DataModelToJson(this);
 }
 
 @JsonSerializable()

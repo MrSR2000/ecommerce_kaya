@@ -9,9 +9,11 @@ class CategoryLoading extends CategoryState {}
 
 class CategorySuccess extends CategoryState {
   final DataModel dataModel;
+  final bool fromFilter;
 
   CategorySuccess({
     required this.dataModel,
+    this.fromFilter = false,
   });
 }
 

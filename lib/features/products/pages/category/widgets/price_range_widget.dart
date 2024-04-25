@@ -90,10 +90,12 @@ class _PriceRangeWidgetState extends State<PriceRangeWidget> {
               });
               widget.filterModel.max = values.end.toInt();
               widget.filterModel.min = values.start.toInt();
-
+            },
+            onChangeEnd: (value) {
               widget.categoryBloc.add(CategoryGetProducts(
                 slug: widget.filterModel.slug!,
                 filter: widget.filterModel,
+                fromFilter: true,
               ));
             },
           ),
@@ -101,12 +103,15 @@ class _PriceRangeWidgetState extends State<PriceRangeWidget> {
         Row(
           children: [
             textWidget(
-              text: "Rs.${widget.min.toInt().toString()}",
+              // text: "Rs.${widget.min.toInt().toString()}",
+              text: "Rs.${widget.filterModel.min.toString()}",
               textSize: TextSize.small,
             ),
             const Spacer(),
             textWidget(
-              text: "Rs.${widget.max.toInt().toString()}",
+              // text: "Rs.${widget.max.toInt().toString()}",
+              text: "Rs.${widget.filterModel.max.toString()}",
+
               textSize: TextSize.small,
             ),
           ],

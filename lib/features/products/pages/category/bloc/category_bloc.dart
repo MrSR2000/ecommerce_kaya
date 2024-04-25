@@ -14,6 +14,7 @@ part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final initial = true;
+  DataModel? _requestData;
 
   CategoryBloc() : super(CategoryInitial()) {
     on<CategoryGetProducts>(categoryGetProducts);
@@ -22,7 +23,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   FutureOr<void> categoryGetProducts(
       CategoryGetProducts event, Emitter<CategoryState> emit) async {
-    emit(CategoryLoading());
+    if (event.reload) {
+      emit(CategoryLoading());
+    }
     try {
       late ProductOuterModel productOuterModel;
       String brandFilter = "";
@@ -41,18 +44,34 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           log("brands == $brandFilter");
         }
       }
+
       productOuterModel = await sl<ApiService>().getProductByCategory(
         slug: event.slug,
         brands: brandFilter.isNotEmpty ? brandFilter : null,
-        min: event.filter?.min!.toString(),
-        max: event.filter?.max!.toString(),
+        min: event.filter?.min?.toString(),
+        max: event.filter?.max?.toString(),
+        page: event.page,
       );
+
+      DataModel? a = productOuterModel.data;
 
       log("get product by category success = $productOuterModel");
 
+      if (event.page == 1) {
+        _requestData = productOuterModel.data!;
+      } else {
+        _requestData = _requestData!.copyWith(
+          pagination: _requestData?.pagination?.copyWith(
+            nextPage: a?.pagination?.nextPage ?? false,
+          ),
+          docs: (_requestData?.docs ?? []) + (a?.docs ?? []),
+        );
+      }
+
       emit(
         CategorySuccess(
-          dataModel: productOuterModel.data!,
+          dataModel: _requestData!,
+          fromFilter: event.fromFilter,
         ),
       );
     } catch (e) {
@@ -71,7 +90,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       log("category filter model = ${categoryFilterOuterModel.data?.categories}");
 
       emit(CategoryFilterSuccess(
-          categoryFilterModel: categoryFilterOuterModel.data!));
+        categoryFilterModel: categoryFilterOuterModel.data!,
+      ));
     } catch (e) {
       log("Category filter error = $e");
     }

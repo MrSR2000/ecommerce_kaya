@@ -49,12 +49,13 @@ class _FilterBrandsWidgetState extends State<FilterBrandsWidget> {
                     widget.categoryBloc.add(CategoryGetProducts(
                       slug: widget.slug,
                       filter: widget.filters,
+                      fromFilter: true,
                     ));
                   },
                 ),
                 textWidget(
                   text: brand?.name ?? "",
-                  textSize: TextSize.medium,
+                  textSize: TextSize.small,
                 ),
               ],
             );

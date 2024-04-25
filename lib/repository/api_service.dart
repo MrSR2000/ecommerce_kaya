@@ -66,6 +66,7 @@ abstract class ApiService {
     @Query('brands') String? brands,
     @Query('min') String? min,
     @Query('max') String? max,
+    @Query('page') int? page,
   });
 
   @GET('product/by-category/filters/{slug}')
