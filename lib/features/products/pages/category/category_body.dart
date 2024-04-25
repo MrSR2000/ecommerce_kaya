@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaya/config/routes/routes.dart';
 import 'package:kaya/core/resources/components/center_circular_loading_widget.dart';
 import 'package:kaya/core/resources/components/contact_developer_widget.dart';
-import 'package:kaya/core/resources/components/text_widget.dart';
+import 'package:kaya/core/resources/components/custom_refresher.dart';
+import 'package:kaya/core/resources/screen_size.dart';
 import 'package:kaya/features/products/pages/category/bloc/category_bloc.dart';
 import 'package:kaya/features/products/pages/product_detail_page/product_detail_page.dart';
 
@@ -29,9 +31,7 @@ class CategoryBody extends StatefulWidget {
 
 class _CategoryBodyState extends State<CategoryBody> {
   int _page = 1;
-
-  final ScrollController _scrollController = ScrollController();
-
+  ScrollController _scrollController = ScrollController();
   bool _loadMoreLoading = false;
 
   @override
@@ -75,6 +75,7 @@ class _CategoryBodyState extends State<CategoryBody> {
         if (state is CategorySuccess) {
           List<ProductModel>? products = state.dataModel.docs;
 
+          /* Infinite Scroll Pagination */
           return Column(
             children: [
               InkWell(
@@ -83,49 +84,99 @@ class _CategoryBodyState extends State<CategoryBody> {
                 },
                 child: const Text("filter"),
               ),
-              Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  shrinkWrap: true,
-                  itemCount: products?.length,
-                  itemBuilder: (context, index) {
-                    ProductModel product = products![index];
+              SizedBox(
+                height: getDeviceSize(context: context).deviceHeight / 1.2,
+                child: CustomRefresher(
+                  onLoad: _onLoad,
+                  scrollController: state.fromFilter
+                      ? _scrollController = ScrollController()
+                      : _scrollController,
+                  canPaginate: state.dataModel.pagination?.nextPage ?? false,
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: products?.length,
+                    itemBuilder: (context, index) {
+                      ProductModel product = products![index];
 
-                    return InkWell(
-                      onTap: () {
-                        pushPage(
-                          context: context,
-                          page: ProductDetailpage(slug: product.slug ?? ""),
-                        );
-                      },
-                      child: Text(product.title ?? ""),
-                    );
-                  },
+                      return InkWell(
+                        onTap: () {
+                          pushPage(
+                            context: context,
+                            page: ProductDetailpage(slug: product.slug ?? ""),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          decoration: const BoxDecoration(
+                            color: Colors.grey,
+                          ),
+                          child: Text(product.title ?? ""),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-              if (state.dataModel.pagination?.nextPage ?? false) ...[
-                Center(
-                  child: _loadMoreLoading
-                      ? const CircularProgressIndicator()
-                      : InkWell(
-                          onTap: () {
-                            _fetchData(reload: false);
-                            _scrollController.jumpTo(
-                                _scrollController.position.maxScrollExtent);
-
-                            setState(() {
-                              _loadMoreLoading = true;
-                            });
-                          },
-                          child: textWidget(
-                            text: "Load More",
-                            textSize: TextSize.medium,
-                          ),
-                        ),
-                ),
-              ]
             ],
           );
+          /* Infinite Scroll Pagination */
+
+          /* Load More Pagination */
+          // return Column(
+          //   children: [
+          // InkWell(
+          //   onTap: () {
+          //     Scaffold.of(context).openEndDrawer();
+          //   },
+          //   child: const Text("filter"),
+          // ),
+          // Expanded(
+          //   child: ListView.builder(
+          //     controller: _scrollController,
+          //     shrinkWrap: true,
+          //     itemCount: products?.length,
+          //     itemBuilder: (context, index) {
+          //       ProductModel product = products![index];
+
+          //       return InkWell(
+          //         onTap: () {
+          //           pushPage(
+          //             context: context,
+          //             page: ProductDetailpage(slug: product.slug ?? ""),
+          //           );
+          //         },
+          //         child: Text(product.title ?? ""),
+          //       );
+          //     },
+          //   ),
+          // ),
+          //     if (state.dataModel.pagination?.nextPage ?? false) ...[
+          //       Center(
+          //         child: _loadMoreLoading
+          //             ? const CircularProgressIndicator()
+          //             : InkWell(
+          //                 onTap: () {
+          //                   _fetchData(reload: false);
+          //                   _scrollController.jumpTo(
+          //                       _scrollController.position.maxScrollExtent);
+
+          //                   setState(() {
+          //                     _loadMoreLoading = true;
+          //                   });
+          //                 },
+          //                 child: textWidget(
+          //                   text: "Load More",
+          //                   textSize: TextSize.medium,
+          //                 ),
+          //               ),
+          //       ),
+          //     ]
+          //   ],
+          // );
+          /* Load More Pagination */
         }
 
         return contactDeveloperWidget();
@@ -144,5 +195,9 @@ class _CategoryBodyState extends State<CategoryBody> {
       reload: reload,
       filter: widget.filterModel,
     ));
+  }
+
+  _onLoad() {
+    _fetchData(reload: false);
   }
 }

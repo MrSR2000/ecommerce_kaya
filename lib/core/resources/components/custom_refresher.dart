@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:kaya/core/resources/components/gaps.dart';
 
@@ -27,6 +29,8 @@ class _CustomRefresherState extends State<CustomRefresher> {
   void initState() {
     super.initState();
     if (widget.scrollController != null && widget.onLoad != null) {
+      log("configure controller");
+
       widget.scrollController!.addListener(_handleScrollController);
     }
   }
@@ -71,6 +75,7 @@ class _CustomRefresherState extends State<CustomRefresher> {
 
   void _handleScrollController() {
     final scrollPosition = widget.scrollController!.position;
+
     if (scrollPosition.pixels >= scrollPosition.maxScrollExtent &&
         !scrollPosition.outOfRange &&
         widget.canPaginate) {
